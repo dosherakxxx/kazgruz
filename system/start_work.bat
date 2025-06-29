@@ -20,7 +20,13 @@ echo [INFO] Работа началась: %START%
 start "" "C:\Users\%USERNAME%\AppData\Local\GitHubDesktop\GitHubDesktop.exe"
 timeout /t 5 >nul
 
+set "PHP_PATH=%~dp0php_tmp\php\php.exe"
+set "PUBLIC_PATH=%REPO_PATH%\public"
+start "php_server" cmd /c ""%PHP_PATH%" -S localhost:8000 -t "%PUBLIC_PATH%""
+
 start "" "C:\Users\%USERNAME%\AppData\Local\Programs\Microsoft VS Code\Code.exe" "%REPO_PATH%"
+
+start "" http://localhost:8000
 
 :waitloop
 tasklist | find /i "Code.exe" >nul
@@ -37,6 +43,8 @@ for /f "tokens=1-3 delims=:.," %%a in ("%TIME%") do (
 
 echo [INFO] Работа завершена: %END%
 
+for /f "tokens=2" %%p in ('tasklist ^| findstr /i "php.exe"') do taskkill /PID %%p >nul 2>&1
+
 cd /d "%REPO_PATH%"
 git diff --shortstat > git_temp.txt
 set "DIFF_RESULT=нет изменений"
@@ -50,7 +58,13 @@ if !workmin! lss 0 set /a workmin+=1440
 set /a wh=workmin / 60
 set /a wm=workmin %% 60
 
-set "TEXT=🕒 Отчёт%%0A▶️ Начало: %START%%%0A⏹️ Конец: %END%%%0A⌛ Время: !wh! ч !wm! мин%%0A📊 Изменения: %DIFF_RESULT%"
+for /f "tokens=1-3 delims=." %%a in ("%DATE%") do (
+    set "DAY=%%a"
+    set "MONTH=%%b"
+    set "YEAR=%%c"
+)
+
+set "TEXT=🗓 Дата: !DAY!.!MONTH!.!YEAR!%%0A🕒 Отчёт%%0A▶️ Начало: %START%%%0A⏹️ Конец: %END%%%0A⌛ Время: !wh! ч !wm! мин%%0A📊 Изменения: %DIFF_RESULT%"
 
 curl -s -X POST ^
   "https://api.telegram.org/bot%TG_TOKEN%/sendMessage" ^
