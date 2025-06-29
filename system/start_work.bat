@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul
 setlocal EnableDelayedExpansion
 
 :: === ПЕРЕХОД К КОРНЮ ПРОЕКТА
@@ -10,8 +11,13 @@ popd
 set "TG_TOKEN=7590659228:AAEz5jSInR7mWXsm0_25PGhkofJ_bNhPxFk"
 set "TG_CHAT_ID=7520366041"
 
-:: === ВРЕМЯ НАЧАЛА
-set "START=%TIME%"
+:: === ВРЕМЯ НАЧАЛА (часы:минуты:секунды)
+for /f "tokens=1-3 delims=:.," %%a in ("%TIME%") do (
+    set "START=%%a:%%b:%%c"
+    set /a sh=1%%a - 100
+    set /a sm=1%%b - 100
+)
+
 echo [INFO] Работа началась: %START%
 
 :: === ЗАПУСК GITHUB DESKTOP
@@ -22,7 +28,6 @@ timeout /t 5 >nul
 start "" "C:\Users\%USERNAME%\AppData\Local\Programs\Microsoft VS Code\Code.exe" "%REPO_PATH%"
 
 :: === ОЖИДАНИЕ ЗАКРЫТИЯ VS CODE
-echo [INFO] Ожидание завершения работы в VS Code...
 :waitloop
 tasklist | find /i "Code.exe" >nul
 if not errorlevel 1 (
@@ -30,43 +35,35 @@ if not errorlevel 1 (
     goto waitloop
 )
 
-:: === ВРЕМЯ ЗАВЕРШЕНИЯ
-set "END=%TIME%"
+:: === ВРЕМЯ ОКОНЧАНИЯ (часы:минуты:секунды)
+for /f "tokens=1-3 delims=:.," %%a in ("%TIME%") do (
+    set "END=%%a:%%b:%%c"
+    set /a eh=1%%a - 100
+    set /a em=1%%b - 100
+)
+
 echo [INFO] Работа завершена: %END%
 
-:: === ПОДСЧЁТ ИЗМЕНЕНИЙ GIT
+:: === ПОДСЧЁТ ИЗМЕНЕНИЙ
 cd /d "%REPO_PATH%"
-git diff --shortstat > temp_git.txt
+git diff --shortstat > git_temp.txt
 set "DIFF_RESULT=нет изменений"
-for /f "tokens=* delims=" %%i in (temp_git.txt) do (
+for /f "tokens=* delims=" %%i in (git_temp.txt) do (
     set "DIFF_RESULT=%%i"
 )
-del temp_git.txt
+del git_temp.txt
 
-:: === ПОДСЧЁТ ВРЕМЕНИ
-set /a sh=%START:~0,2%
-set /a sm=%START:~3,2%
-set /a eh=%END:~0,2%
-set /a em=%END:~3,2%
 set /a workmin=(eh*60+em)-(sh*60+sm)
-if %workmin% lss 0 set /a workmin+=1440
-set /a wh=workmin/60
-set /a wm=workmin%%60
+if !workmin! lss 0 set /a workmin+=1440
+set /a wh=workmin / 60
+set /a wm=workmin %% 60
 
-:: === СОБИРАЕМ СООБЩЕНИЕ В ОДНОЙ ПЕРЕМЕННОЙ
-set "MSG=🕒 Отчёт:%%0A▶️ Старт: %START%%%0A⏹️ Конец: %END%%%0A⌛ Время: !wh! ч !wm! мин%%0A📊 Изменения: %DIFF_RESULT%"
+set "TEXT=🕒 Отчёт%%0A▶️ Начало: %START%%%0A⏹️ Конец: %END%%%0A⌛ Время: !wh! ч !wm! мин%%0A📊 Изменения: %DIFF_RESULT%"
 
-:: === СОХРАНЯЕМ ВРЕМЕННЫЙ ФАЙЛ С UTF-8
-set "TEMPFILE=%TEMP%\tg_report.txt"
-echo %MSG% > "%TEMPFILE%"
-powershell -Command "Get-Content '%TEMPFILE%' | Out-File -FilePath '%TEMPFILE%' -Encoding UTF8"
-set /p MSG_UTF=<"%TEMPFILE%"
-del "%TEMPFILE%"
-
-curl -s -X POST "https://api.telegram.org/bot%TG_TOKEN%/sendMessage" ^
- -H "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" ^
- --data-urlencode "chat_id=%TG_CHAT_ID%" ^
- --data-urlencode "text=%MSG_UTF%" >nul
+curl -s -X POST ^
+  "https://api.telegram.org/bot%TG_TOKEN%/sendMessage" ^
+  -d "chat_id=%TG_CHAT_ID%" ^
+  -d "text=%TEXT%" >nul
 
 echo [OK] Отчёт отправлен в Telegram.
 pause
