@@ -40,12 +40,23 @@ set /a sm=%START:~3,2%
 set /a eh=%END:~0,2%
 set /a em=%END:~3,2%
 set /a workmin=(eh*60+em)-(sh*60+sm)
+if %workmin% lss 0 set /a workmin+=1440
 set /a wh=workmin/60
 set /a wm=workmin%%60
 
-set "MSG=🕒 Отчёт:%0A▶️ Старт: %START%%0A⏹️ Конец: %END%%0A⌛ Время: !wh! ч !wm! мин%0A📊 Изменения: %DIFF_RESULT%"
+set "MSG=🕒 Отчёт%%0A▶️ Старт: %START%%%0A⏹️ Конец: %END%%%0A⌛ Время: !wh! ч !wm! мин%%0A📊 Изменения: %DIFF_RESULT%"
 
-curl -s -X POST "https://api.telegram.org/bot%TG_TOKEN%/sendMessage" -d "chat_id=%TG_CHAT_ID%" -d "text=%MSG%" >nul
+set "TEMPFILE=%TEMP%\tg_report.txt"
+echo %MSG% > "%TEMPFILE%"
+
+powershell -Command "Get-Content '%TEMPFILE%' | Out-File -FilePath '%TEMPFILE%' -Encoding UTF8"
+
+curl -s -X POST "https://api.telegram.org/bot%TG_TOKEN%/sendMessage" ^
+ -H "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" ^
+ -d "chat_id=%TG_CHAT_ID%" ^
+ --data-urlencode "text=@%TEMPFILE%" >nul
+
+del "%TEMPFILE%"
 
 echo [OK] Отчёт отправлен в Telegram.
 pause
