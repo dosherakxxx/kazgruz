@@ -2,16 +2,20 @@
 chcp 65001 >nul
 setlocal EnableDelayedExpansion
 
-:: === ЧТЕНИЕ ИЛИ СОХРАНЕНИЕ ИМЕНИ РАЗРАБОТЧИКА
-set "NAME_FILE=C:\name_kazgruz.txt"
+set "NAME_DIR=%USERPROFILE%\kazgruz"
+set "NAME_FILE=%NAME_DIR%\name_kazgruz.txt"
+
+if not exist "%NAME_DIR%" (
+    mkdir "%NAME_DIR%"
+)
+
 if exist "%NAME_FILE%" (
     set /p DEV_NAME=<"%NAME_FILE%"
 ) else (
-    set /p DEV_NAME=Введите ваше имя один раз: 
+    set /p DEV_NAME=Введите ваше имя: 
     echo %DEV_NAME%>"%NAME_FILE%"
 )
 
-:: === ПЕРЕХОД В КОРЕНЬ РЕПОЗИТОРИЯ
 pushd "%~dp0\.."
 set "REPO_PATH=%CD%"
 popd
