@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет продавца — KazGruz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/style.css">
+    <style>
+        .seller-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 32px 28px 24px 28px;
+        }
+        .seller-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+        .car-list {
+            margin-top: 24px;
+        }
+        .car-item {
+            background: #f7f7f9;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 18px;
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+        }
+        .car-item img {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        .car-info {
+            flex: 1;
+        }
+        .car-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .car-actions button {
+            width: 100px;
+        }
+        .add-car-form, .edit-car-form {
+            margin-top: 24px;
+            background: #f7f7f9;
+            border-radius: 8px;
+            padding: 18px 16px;
+        }
+        .add-car-form h3, .edit-car-form h3 {
+            margin-top: 0;
+        }
+        .add-car-form label, .edit-car-form label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.98rem;
+        }
+        .add-car-form input, .add-car-form select,
+        .edit-car-form input, .edit-car-form select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 7px 10px;
+            border-radius: 6px;
+            border: 1px solid #e3e3e3;
+            font-size: 1rem;
+        }
+        .add-car-form button, .edit-car-form button {
+            margin-top: 8px;
+        }
+        @media (max-width: 700px) {
+            .car-item { flex-direction: column; align-items: stretch; }
+            .car-actions { flex-direction: row; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="seller-container">
+        <div class="seller-header">Личный кабинет продавца</div>
+        <div id="car-list" class="car-list"></div>
+        <form id="add-car-form" class="add-car-form">
+            <h3>Добавить автомобиль</h3>
+            <label>Фото (URL): <input name="img" type="url" required></label>
+            <label>Марка: <input name="brand" required></label>
+            <label>Модель: <input name="model" required></label>
+            <label>Двигатель: <input name="engine" required></label>
+            <label>Объем (литр): <input name="liter" type="number" step="0.1" required></label>
+            <label>Тип двигателя: 
+                <select name="type" required>
+                    <option>Бензин</option>
+                    <option>Дизель</option>
+                    <option>Гибрид</option>
+                    <option>Электро</option>
+                </select>
+            </label>
+            <label>Пробег (км): <input name="mileage" type="number" required></label>
+            <label>Страна производства: <input name="country" required></label>
+            <label>Кузов: <input name="body" required></label>
+            <label>Кол-во мест: <input name="seats" type="number" required></label>
+            <label>Руль: 
+                <select name="wheel" required>
+                    <option>Левый</option>
+                    <option>Правый</option>
+                </select>
+            </label>
+            <label>Цвет: <input name="color" required></label>
+            <label>Коробка передач: 
+                <select name="gearbox" required>
+                    <option>Автомат</option>
+                    <option>Механика</option>
+                </select>
+            </label>
+            <label>Привод: 
+                <select name="drive" required>
+                    <option>Передний</option>
+                    <option>Задний</option>
+                    <option>Полный</option>
+                </select>
+            </label>
+            <label>Растаможен в Казахстане: 
+                <select name="customs" required>
+                    <option>Да</option>
+                    <option>Нет</option>
+                </select>
+            </label>
+            <label>Цена ($): <input name="price" type="number" required></label>
+            <label>Телефон продавца: <input name="phone" required></label>
+            <button class="btn btn-primary" type="submit">Добавить</button>
+        </form>
+        <form id="edit-car-form" class="edit-car-form" style="display:none;">
+            <h3>Редактировать автомобиль</h3>
+            <!-- поля будут динамически добавлены JS -->
+            <button class="btn btn-primary" type="submit">Сохранить</button>
+            <button class="btn btn-secondary" type="button" id="cancel-edit">Отмена</button>
+        </form>
+    </div>
+    <script>
+        let cars = [];
+        let editIndex = null;
+
+        function renderCars() {
+            const carList = document.getElementById('car-list');
+            if (cars.length === 0) {
+                carList.innerHTML = '<div style="color:#888;">Нет добавленных автомобилей.</div>';
+                return;
+            }
+            carList.innerHTML = '';
+            cars.forEach((car, idx) => {
+                carList.innerHTML += `
+                <div class="car-item">
+                    <img src="${car.img}" alt="${car.brand} ${car.model}">
+                    <div class="car-info">
+                        <div><b>${car.brand} ${car.model}</b> (${car.engine}, ${car.liter}л, ${car.type})</div>
+                        <div>Пробег: ${car.mileage} км, Страна: ${car.country}, Кузов: ${car.body}</div>
+                        <div>Мест: ${car.seats}, Руль: ${car.wheel}, Цвет: ${car.color}</div>
+                        <div>Коробка: ${car.gearbox}, Привод: ${car.drive}, Растаможен: ${car.customs}</div>
+                        <div>Цена: <b>$${car.price}</b> | Телефон: ${car.phone}</div>
+                    </div>
+                    <div class="car-actions">
+                        <button class="btn btn-secondary" onclick="editCar(${idx})">Редактировать</button>
+                        <button class="btn btn-secondary" onclick="deleteCar(${idx})">Удалить</button>
+                    </div>
+                </div>
+                `;
+            });
+        }
+
+        document.getElementById('add-car-form').onsubmit = function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const car = {};
+            Array.from(form.elements).forEach(el => {
+                if (el.name) car[el.name] = el.value;
+            });
+            cars.push(car);
+            form.reset();
+            renderCars();
+        };
+
+        window.deleteCar = function(idx) {
+            if (confirm('Удалить этот автомобиль?')) {
+                cars.splice(idx, 1);
+                renderCars();
+            }
+        };
+
+        window.editCar = function(idx) {
+            editIndex = idx;
+            const car = cars[idx];
+            const form = document.getElementById('edit-car-form');
+            form.innerHTML = `
+                <h3>Редактировать автомобиль</h3>
+                ${Object.keys(car).map(key => {
+                    if (key === 'img') return `<label>Фото (URL): <input name="img" type="url" value="${car.img}" required></label>`;
+                    if (key === 'brand') return `<label>Марка: <input name="brand" value="${car.brand}" required></label>`;
+                    if (key === 'model') return `<label>Модель: <input name="model" value="${car.model}" required></label>`;
+                    if (key === 'engine') return `<label>Двигатель: <input name="engine" value="${car.engine}" required></label>`;
+                    if (key === 'liter') return `<label>Объем (литр): <input name="liter" type="number" step="0.1" value="${car.liter}" required></label>`;
+                    if (key === 'type') return `<label>Тип двигателя: 
+                        <select name="type" required>
+                            <option${car.type==='Бензин'?' selected':''}>Бензин</option>
+                            <option${car.type==='Дизель'?' selected':''}>Дизель</option>
+                            <option${car.type==='Гибрид'?' selected':''}>Гибрид</option>
+                            <option${car.type==='Электро'?' selected':''}>Электро</option>
+                        </select>
+                    </label>`;
+                    if (key === 'mileage') return `<label>Пробег (км): <input name="mileage" type="number" value="${car.mileage}" required></label>`;
+                    if (key === 'country') return `<label>Страна производства: <input name="country" value="${car.country}" required></label>`;
+                    if (key === 'body') return `<label>Кузов: <input name="body" value="${car.body}" required></label>`;
+                    if (key === 'seats') return `<label>Кол-во мест: <input name="seats" type="number" value="${car.seats}" required></label>`;
+                    if (key === 'wheel') return `<label>Руль: 
+                        <select name="wheel" required>
+                            <option${car.wheel==='Левый'?' selected':''}>Левый</option>
+                            <option${car.wheel==='Правый'?' selected':''}>Правый</option>
+                        </select>
+                    </label>`;
+                    if (key === 'color') return `<label>Цвет: <input name="color" value="${car.color}" required></label>`;
+                    if (key === 'gearbox') return `<label>Коробка передач: 
+                        <select name="gearbox" required>
+                            <option${car.gearbox==='Автомат'?' selected':''}>Автомат</option>
+                            <option${car.gearbox==='Механика'?' selected':''}>Механика</option>
+                        </select>
+                    </label>`;
+                    if (key === 'drive') return `<label>Привод: 
+                        <select name="drive" required>
+                            <option${car.drive==='Передний'?' selected':''}>Передний</option>
+                            <option${car.drive==='Задний'?' selected':''}>Задний</option>
+                            <option${car.drive==='Полный'?' selected':''}>Полный</option>
+                        </select>
+                    </label>`;
+                    if (key === 'customs') return `<label>Растаможен в Казахстане: 
+                        <select name="customs" required>
+                            <option${car.customs==='Да'?' selected':''}>Да</option>
+                            <option${car.customs==='Нет'?' selected':''}>Нет</option>
+                        </select>
+                    </label>`;
+                    if (key === 'price') return `<label>Цена ($): <input name="price" type="number" value="${car.price}" required></label>`;
+                    if (key === 'phone') return `<label>Телефон продавца: <input name="phone" value="${car.phone}" required></label>`;
+                    return '';
+                }).join('')}
+                <button class="btn btn-primary" type="submit">Сохранить</button>
+                <button class="btn btn-secondary" type="button" id="cancel-edit">Отмена</button>
+            `;
+            form.style.display = '';
+            document.getElementById('add-car-form').style.display = 'none';
+            document.getElementById('cancel-edit').onclick = function() {
+                form.style.display = 'none';
+                document.getElementById('add-car-form').style.display = '';
+            };
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                const newCar = {};
+                Array.from(form.elements).forEach(el => {
+                    if (el.name) newCar[el.name] = el.value;
+                });
+                cars[editIndex] = newCar;
+                form.style.display = 'none';
+                document.getElementById('add-car-form').style.display = '';
+                renderCars();
+            };
+        };
+
+        renderCars();
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход / Регистрация — KazGruz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/style.css">
+    <style>
+        .auth-container {
+            max-width: 400px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 32px 28px 24px 28px;
+        }
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e3e3e3;
+        }
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px 0;
+            cursor: pointer;
+            font-weight: 500;
+            color: #888;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .auth-tab.active {
+            color: #1a73e8;
+            border-bottom: 2px solid #1a73e8;
+        }
+        .auth-form {
+            display: none;
+        }
+        .auth-form.active {
+            display: block;
+        }
+        .auth-form input {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 16px;
+            border: 1px solid #e3e3e3;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .auth-form button {
+            width: 100%;
+        }
+        .auth-form .form-link {
+            display: block;
+            text-align: right;
+            margin-top: 8px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 0.97rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-tabs">
+            <div class="auth-tab active" data-tab="login">Вход</div>
+            <div class="auth-tab" data-tab="register">Регистрация</div>
+        </div>
+        <form class="auth-form active" id="login-form">
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Пароль" required>
+            <button class="btn btn-primary" type="submit">Войти</button>
+            <a href="#" class="form-link">Забыли пароль?</a>
+        </form>
+        <form class="auth-form" id="register-form">
+            <input type="text" placeholder="Имя" required>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Пароль" required>
+            <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+        </form>
+    </div>
+    <script src="../js/script.js"></script>
+</body>
+</html>
