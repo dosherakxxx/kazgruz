@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "name": "Главный админ",
+    "email": "admin@example.com",
+    "password": "$2y$10$wH6Qw8p6n7w3Q6v8Q6v8QeQ6v8Q6v8Q6v8Q6v8Q6v8Q6v8Q6v8Q6", 
+    "role": "superadmin",
+    "created_at": "2024-07-02 12:00:00"
+  }
+]

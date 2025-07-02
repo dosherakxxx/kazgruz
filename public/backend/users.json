@@ -1,0 +1,18 @@
+[
+    {
+        "email": "poznavatelzhizni@gmail.com",
+        "password": "$2y$10$Y65rS6\/X4ICaEZMIqaJvju5fUDdOXwzwyQ7.khSVMc1JpSiAcomMq"
+    }
+]
+
+
+[
+  {
+    "id": 1,
+    "name": "Главный админ",
+    "email": "admin@example.com",
+    "password": "$2y$10$eImiTXuWVxfM37uY4JANjQ==", // тут должен быть хеш пароля!
+    "role": "superadmin",
+    "created_at": "2024-07-02 12:00:00"
+  }
+]

@@ -5,6 +5,8 @@
     <title>Личный кабинет продавца — KazGruz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/style.css">
+
+
     <style>
         .seller-container {
             max-width: 900px;
@@ -81,6 +83,16 @@
     </style>
 </head>
 <body>
+    <header class="header">
+        <div class="container header__container">
+            <div class="logo">KazGruz</div>
+            <nav class="nav">
+    <a href="../../index.html" class="nav__link">Главная</a>
+    <a href="../../index.html#catalog" class="nav__link">Каталог</a>
+    <a href="login.html" class="nav__link nav__login-btn">Вход / Регистрация</a>
+</nav>
+        </div>
+    </header>
     <div class="seller-container">
         <div class="seller-header">Личный кабинет продавца</div>
         <div id="car-list" class="car-list"></div>
@@ -140,7 +152,8 @@
             <button class="btn btn-secondary" type="button" id="cancel-edit">Отмена</button>
         </form>
     </div>
-    <script>
+    <script src="../js/script.js"></script>
+    <script>    
         let cars = [];
         let editIndex = null;
 
