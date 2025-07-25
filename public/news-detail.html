@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали новости — KazGruz</title>
+    <link rel="stylesheet" href="frontend/style/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header__container">
+            <div class="logo">KazGruz</div>
+            <nav class="nav">
+                <a href="index.html" class="nav__link">← Назад</a>
+                <a href="frontend/html/login.html" class="nav__link nav__login-btn">Вход / Регистрация</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="news-detail">
+        <div class="container">
+            <article class="news-article">
+                <div class="back-button">
+                    <a href="index.html" class="btn btn-secondary">← Вернуться к новостям</a>
+                </div>
+                
+                <div class="news-header">
+                    <h1 id="news-title">Заголовок новости</h1>
+                    <div class="news-meta-detail">
+                        <span id="news-date" class="news-date">Дата публикации</span>
+                        <div class="news-reactions-detail">
+                            <button class="reaction-btn like-btn" onclick="toggleReaction('like')">
+                                👍 <span id="like-count">0</span>
+                            </button>
+                            <button class="reaction-btn dislike-btn" onclick="toggleReaction('dislike')">
+                                👎 <span id="dislike-count">0</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-image-container">
+                    <img id="news-image" src="" alt="Изображение новости" class="news-detail-image">
+                </div>
+
+                <div class="news-content-detail" id="news-content">
+                    <!-- Контент новости будет загружен через JavaScript -->
+                </div>
+
+                <div class="news-footer">
+                    <div class="share-buttons">
+                        <h4>Поделиться:</h4>
+                        <a href="#" class="share-btn telegram" onclick="shareToTelegram()">Telegram</a>
+                        <a href="#" class="share-btn whatsapp" onclick="shareToWhatsApp()">WhatsApp</a>
+                        <a href="#" class="share-btn copy-link" onclick="copyLink()">Копировать ссылку</a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__container">
+            <div class="footer-section">
+                <h4>Способы оплаты</h4>
+                <div class="payment-methods">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/200px-PayPal.svg.png" alt="PayPal" class="payment-logo">
+                    <img src="https://kaspi.kz/img/kaspi-logo.png" alt="Kaspi Bank" class="payment-logo">
+                    <img src="https://halykbank.kz/static/img/logo.svg" alt="Halyk Bank" class="payment-logo">
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Скачать приложение</h4>
+                <div class="app-downloads">
+                    <a href="#" class="app-link">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/200px-Google_Play_Store_badge_EN.svg.png" alt="Google Play" class="app-store-logo">
+                    </a>
+                    <a href="#" class="app-link">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/200px-Download_on_the_App_Store_Badge.svg.png" alt="App Store" class="app-store-logo">
+                    </a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <div class="contact-info">
+                    <p>📧 info@kazgruz.kz</p>
+                    <p>📞 +7 (777) 123-45-67</p>
+                    <p>🏢 г. Алматы, ул. Абая 150</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>KazGruz © 2025. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Загрузка данных новости
+        document.addEventListener('DOMContentLoaded', function() {
+            const newsData = JSON.parse(localStorage.getItem('currentNews'));
+            
+            if (newsData) {
+                document.getElementById('news-title').textContent = newsData.title;
+                document.getElementById('news-date').textContent = newsData.date;
+                document.getElementById('news-image').src = newsData.image;
+                document.getElementById('news-content').innerHTML = newsData.content;
+                document.getElementById('like-count').textContent = newsData.likes;
+                document.getElementById('dislike-count').textContent = newsData.dislikes;
+                
+                // Обновляем заголовок страницы
+                document.title = newsData.title + ' — KazGruz';
+            } else {
+                // Если данных нет, перенаправляем на главную
+                window.location.href = 'index.html';
+            }
+        });
+
+        let userReaction = null;
+
+        function toggleReaction(type) {
+            const likeBtn = document.querySelector('.like-btn');
+            const dislikeBtn = document.querySelector('.dislike-btn');
+            const likeCount = document.getElementById('like-count');
+            const dislikeCount = document.getElementById('dislike-count');
+
+            if (userReaction === type) {
+                // Убираем реакцию
+                userReaction = null;
+                likeBtn.classList.remove('active');
+                dislikeBtn.classList.remove('active');
+                
+                if (type === 'like') {
+                    likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                } else {
+                    dislikeCount.textContent = parseInt(dislikeCount.textContent) - 1;
+                }
+            } else {
+                // Устанавливаем новую реакцию
+                if (userReaction) {
+                    // Убираем предыдущую реакцию
+                    if (userReaction === 'like') {
+                        likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                        likeBtn.classList.remove('active');
+                    } else {
+                        dislikeCount.textContent = parseInt(dislikeCount.textContent) - 1;
+                        dislikeBtn.classList.remove('active');
+                    }
+                }
+                
+                userReaction = type;
+                
+                if (type === 'like') {
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                    likeBtn.classList.add('active');
+                } else {
+                    dislikeCount.textContent = parseInt(dislikeCount.textContent) + 1;
+                    dislikeBtn.classList.add('active');
+                }
+            }
+        }
+
+        function shareToTelegram() {
+            const title = document.getElementById('news-title').textContent;
+            const url = window.location.href;
+            const text = encodeURIComponent(`${title}\n${url}`);
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${text}`, '_blank');
+        }
+
+        function shareToWhatsApp() {
+            const title = document.getElementById('news-title').textContent;
+            const url = window.location.href;
+            const text = encodeURIComponent(`${title}\n${url}`);
+            window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Ссылка скопирована в буфер обмена!');
+            });
+        }
+    </script>
+</body>
+</html>

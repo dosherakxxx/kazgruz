@@ -3,6 +3,7 @@ body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background: #f7f7f9;
     color: #222;
+    scroll-behavior: smooth;
 }
 .container {
     max-width: 1200px;
@@ -13,6 +14,10 @@ body {
     background: #fff;
     box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     padding: 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
 }
 .header__container {
     display: flex;
@@ -23,7 +28,7 @@ body {
 .logo {
     font-size: 2rem;
     font-weight: bold;
-    color: #1a73e8;
+    color: #3498db;
     letter-spacing: 2px;
 }
 .nav {
@@ -32,7 +37,7 @@ body {
 }
 .nav__link {
     text-decoration: none;
-    color: #222;
+    color: #2c3e50;
     font-weight: 500;
     padding: 8px 12px;
     border-radius: 6px;
@@ -40,19 +45,541 @@ body {
 }
 .nav__link.active,
 .nav__link:hover {
-    background: #e3f0ff;
-    color: #1a73e8;
+    background: #ecf0f1;
+    color: #3498db;
 }
-.nav__login-btn {
-    background: #1a73e8;
+
+/* Мобильная навигация */
+.nav__toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.nav__toggle span {
+    width: 25px;
+    height: 3px;
+    background: #2c3e50;
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 12px;
+    }
+    
+    .header__container {
+        height: 56px;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .nav__toggle {
+        display: flex;
+    }
+    
+    .nav {
+        position: fixed;
+        top: 56px;
+        right: -100%;
+        width: 280px;
+        height: calc(100vh - 56px);
+        background: #fff;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+        transition: right 0.3s ease;
+        gap: 16px;
+    }
+    
+    .nav.active {
+        right: 0;
+    }
+    
+    .nav__link {
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+}
+.nav__login-btn, .nav__profile-btn {
+    background: #3498db;
     color: #fff !important;
     border-radius: 6px;
     padding: 8px 16px;
     margin-left: 12px;
     transition: background 0.2s;
 }
-.nav__login-btn:hover {
+.nav__login-btn:hover, .nav__profile-btn:hover {
+    background: #2980b9;
+}
+
+/* Полноэкранный приветственный экран */
+.welcome-screen {
+    height: 100vh;
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #ecf0f1 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding-top: 64px;
+}
+
+.welcome-content {
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.welcome-logo {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.welcome-title {
+    font-size: 2.8rem;
+    color: #fff;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.welcome-title .accent {
+    color: #f39c12;
+}
+
+.welcome-subtitle {
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 40px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.welcome-features {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.feature {
+    background: rgba(255,255,255,0.15);
+    padding: 12px 20px;
+    border-radius: 25px;
+    color: #fff;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.btn-large {
+    font-size: 1.1rem;
+    padding: 14px 35px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+    letter-spacing: 0.5px;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.scroll-arrow {
+    font-size: 2rem;
+    color: #fff;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Разделы страницы */
+.section-title {
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 50px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.news-section {
+    padding: 70px 0;
+    background: #f8f9fa;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.news-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    border: 1px solid #e9ecef;
+}
+
+.news-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(44,62,80,0.1);
+}
+
+.news-id {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #6c757d;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 1;
+}
+
+.news-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.news-content {
+    padding: 18px;
+}
+
+.news-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #2c3e50;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.news-excerpt {
+    color: #6c757d;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.news-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.news-date {
+    color: #95a5a6;
+    font-weight: 500;
+}
+
+.news-reactions {
+    display: flex;
+    gap: 12px;
+}
+
+.like, .dislike {
+    color: #95a5a6;
+    font-size: 0.8rem;
+}
+
+/* Раздел О нас */
+.about-section {
+    padding: 70px 0;
+    background: #fff;
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 50px;
+    align-items: start;
+}
+
+.about-main h3 {
+    font-size: 1.7rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.about-main p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 30px;
+    color: #5a6c7d;
+}
+
+.about-stats {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.about-team h4 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.team-member {
+    text-align: center;
+}
+
+.member-placeholder {
+    width: 70px;
+    height: 70px;
+    background: #ecf0f1;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: #95a5a6;
+}
+
+.member-placeholder::before {
+    content: "👤";
+}
+
+.member-name {
+    font-weight: 500;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+/* Футер */
+.footer {
+    background: #2c3e50;
+    color: #fff;
+    padding: 40px 0 0;
+}
+
+.footer__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.footer-section h4 {
+    margin-bottom: 15px;
+    color: #1a73e8;
+}
+
+.payment-methods, .app-downloads {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.payment-logo, .app-store-logo {
+    height: 40px;
+    border-radius: 5px;
+}
+
+.app-store-logo {
+    height: 50px;
+}
+
+.contact-info p, .support-info p {
+    margin: 8px 0;
+    font-size: 0.9rem;
+}
+
+.footer-bottom {
+    border-top: 1px solid #34495e;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #bdc3c7;
+}
+
+/* Страница деталей новости */
+.news-detail {
+    padding-top: 100px;
+    min-height: 100vh;
+}
+
+.news-article {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.back-button {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.news-header {
+    padding: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.news-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.news-meta-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.news-reactions-detail {
+    display: flex;
+    gap: 10px;
+}
+
+.reaction-btn {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.reaction-btn:hover {
+    background: #e9ecef;
+}
+
+.reaction-btn.active {
+    background: #1a73e8;
+    color: #fff;
+    border-color: #1a73e8;
+}
+
+.news-image-container {
+    width: 100%;
+}
+
+.news-detail-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.news-content-detail {
+    padding: 30px;
+    line-height: 1.7;
+}
+
+.news-content-detail h4 {
+    color: #1a73e8;
+    margin: 20px 0 10px;
+}
+
+.news-content-detail ul {
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.news-content-detail li {
+    margin-bottom: 8px;
+}
+
+.news-footer {
+    padding: 30px;
+    border-top: 1px solid #eee;
+    background: #f8f9fa;
+}
+
+.share-buttons h4 {
+    margin-bottom: 15px;
+    color: #1a73e8;
+}
+
+.share-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.share-btn {
+    background: #1a73e8;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.share-btn:hover {
     background: #1760c4;
+}
+
+.share-btn.telegram {
+    background: #0088cc;
+}
+
+.share-btn.whatsapp {
+    background: #25d366;
+}
+
+.share-btn.copy-link {
+    background: #6c757d;
 }
 .banner {
     background: linear-gradient(90deg, #e3f0ff 0%, #fff 100%);
@@ -79,21 +606,22 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
+    text-decoration: none;
 }
 .btn-primary {
-    background: #1a73e8;
+    background: #3498db;
     color: #fff;
 }
 .btn-primary:hover {
-    background: #1760c4;
+    background: #2980b9;
 }
 .btn-secondary {
     background: #fff;
-    color: #1a73e8;
-    border: 1px solid #1a73e8;
+    color: #3498db;
+    border: 1px solid #3498db;
 }
 .btn-secondary:hover {
-    background: #e3f0ff;
+    background: #ecf0f1;
 }
 .catalog {
     padding: 40px 0;
@@ -147,18 +675,82 @@ body {
     color: #1a73e8;
     margin-bottom: 10px;
 }
-.footer {
-    background: #fff;
-    border-top: 1px solid #e3e3e3;
-    padding: 18px 0;
-    margin-top: 40px;
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    .header {
+        position: relative;
+    }
+    
+    .welcome-screen {
+        padding-top: 0;
+    }
+    
+    .welcome-logo {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+    }
+    
+    .welcome-title {
+        font-size: 2rem;
+    }
+    
+    .welcome-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .welcome-features {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .feature {
+        padding: 12px 20px;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .news-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .about-stats {
+        justify-content: center;
+    }
+    
+    .footer__container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .payment-methods, .app-downloads {
+        justify-content: center;
+    }
+    
+    .news-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .news-meta-detail {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .share-buttons {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
-.footer__container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1rem;
-}
+
 @media (max-width: 700px) {
     .header__container, .footer__container {
         flex-direction: column;

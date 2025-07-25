@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Toyota Camry 2020 — KazGruz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/style.css">
+    <style>
+        body {
+            background: #f8f9fa;
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .main-content {
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 20px;
+            transition: background 0.3s;
+            font-weight: 500;
+        }
+        
+        .back-button:hover {
+            background: #2980b9;
+        }
+        
+        .car-detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+        
+        .car-header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .car-title-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .car-main-title {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .car-price-large {
+            font-size: 2.5rem;
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .car-meta-info {
+            display: flex;
+            gap: 30px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .favorite-button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+        
+        .favorite-button:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .car-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 25px;
+        }
+        
+        .main-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .car-gallery {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .image-thumbnails {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+        
+        .thumbnail.active {
+            border-color: #3498db;
+        }
+        
+        .thumbnail:hover {
+            opacity: 0.7;
+        }
+        
+        .car-specs {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .specs-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+        
+        .spec-label {
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .spec-value {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .features-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .features-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toggle-features {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle-features:hover {
+            background: #2980b9;
+        }
+        
+        .features-basic {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .features-full {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .feature-item.available {
+            background: #d5f4e6;
+            color: #27ae60;
+        }
+        
+        .feature-item.unavailable {
+            background: #fadbd8;
+            color: #e74c3c;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .contact-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        .seller-info {
+            margin-bottom: 20px;
+        }
+        
+        .seller-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .seller-rating {
+            color: #f39c12;
+            margin-bottom: 15px;
+        }
+        
+        .contact-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .contact-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .btn-call {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-call:hover {
+            background: #219a52;
+        }
+        
+        .btn-message {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-message:hover {
+            background: #2980b9;
+        }
+        
+        .seller-description {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .description-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .description-text {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding-top: 60px;
+            }
+            
+            .back-button {
+                margin: 15px;
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .car-detail-container {
+                padding: 0 15px;
+            }
+            
+            .car-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .car-title-section {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .car-main-title {
+                font-size: 1.6rem;
+            }
+            
+            .car-year-mileage {
+                font-size: 0.9rem;
+            }
+            
+            .car-price-large {
+                font-size: 1.8rem;
+            }
+            
+            .gallery-main-image {
+                height: 250px;
+            }
+            
+            .gallery-thumbnails {
+                gap: 8px;
+            }
+            
+            .gallery-thumbnail {
+                width: 60px;
+                height: 40px;
+            }
+            
+            .specs-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .spec-item {
+                padding: 12px;
+            }
+            
+            .contact-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .contact-button {
+                padding: 12px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .feature-item {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .car-detail-container {
+                padding: 0 10px;
+            }
+            
+            .car-main-title {
+                font-size: 1.4rem;
+            }
+            
+            .car-price-large {
+                font-size: 1.6rem;
+            }
+            
+            .gallery-main-image {
+                height: 200px;
+            }
+            
+            .gallery-thumbnail {
+                width: 50px;
+                height: 35px;
+            }
+            
+            .back-button {
+                margin: 10px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__container">
+            <div class="logo">KazGruz</div>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav class="nav" id="nav-menu">
+                <a href="../../index.html" class="nav__link">Главная</a>
+                <a href="catalog.html" class="nav__link">Каталог</a>
+                <a href="#" class="nav__link">О нас</a>
+                <a href="login.html" class="nav__link nav__login-btn" id="auth-btn">Вход / Регистрация</a>
+                <a href="profile.html" class="nav__link nav__profile-btn" id="profile-btn" style="display: none;">Личный кабинет</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <a href="catalog.html" class="back-button">
+            ← Назад к каталогу
+        </a>
+
+        <div class="car-detail-container">
+            <div class="car-header">
+                <div class="car-title-section">
+                    <div>
+                        <h1 class="car-main-title" id="car-title">Toyota Camry 2020</h1>
+                        <div class="car-meta-info">
+                            <span>📅 Опубликовано: 2 дня назад</span>
+                            <span>👁️ Просмотров: 127</span>
+                            <span>📍 Тбилиси, Грузия</span>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="car-price-large" id="car-price">$25,000</div>
+                        <button class="favorite-button" onclick="toggleFavorite()">
+                            ❤️ <span id="favorite-count">18</span> В избранное
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="car-content">
+                <div class="main-info">
+                    <div class="car-gallery">
+                        <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800&h=400&fit=crop" 
+                             alt="Toyota Camry" class="main-image" id="main-image">
+                        <div class="image-thumbnails" id="thumbnails">
+                            <!-- Миниатюры будут добавлены через JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="car-specs">
+                        <h3 class="specs-title">Основные характеристики</h3>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <span class="spec-label">Марка</span>
+                                <span class="spec-value">Toyota</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Модель</span>
+                                <span class="spec-value">Camry</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Год выпуска</span>
+                                <span class="spec-value">2020</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Пробег</span>
+                                <span class="spec-value">45,000 км</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Двигатель</span>
+                                <span class="spec-value">2.5L Бензин</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Коробка</span>
+                                <span class="spec-value">Автомат</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Привод</span>
+                                <span class="spec-value">Передний</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Кузов</span>
+                                <span class="spec-value">Седан</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Цвет</span>
+                                <span class="spec-value">Белый</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Статус</span>
+                                <span class="spec-value" style="color: #27ae60;">Растаможен</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="features-section">
+                        <div class="features-title">
+                            Комплектация и опции
+                            <button class="toggle-features" onclick="toggleFeatures()">Развернуть</button>
+                        </div>
+                        
+                        <div class="features-basic" id="features-basic">
+                            <div class="feature-item available">✓ Климат-контроль</div>
+                            <div class="feature-item available">✓ Кожаный салон</div>
+                            <div class="feature-item available">✓ Подогрев сидений</div>
+                            <div class="feature-item available">✓ Bluetooth</div>
+                        </div>
+                        
+                        <div class="features-full" id="features-full">
+                            <div class="feature-item available">✓ Камера заднего вида</div>
+                            <div class="feature-item available">✓ Круиз-контроль</div>
+                            <div class="feature-item available">✓ Парктроники</div>
+                            <div class="feature-item available">✓ Мультируль</div>
+                            <div class="feature-item available">✓ Электростекла</div>
+                            <div class="feature-item available">✓ Центральный замок</div>
+                            <div class="feature-item available">✓ ABS</div>
+                            <div class="feature-item available">✓ ESP</div>
+                            <div class="feature-item available">✓ Подушки безопасности</div>
+                            <div class="feature-item available">✓ Иммобилайзер</div>
+                            <div class="feature-item unavailable">✗ Люк</div>
+                            <div class="feature-item unavailable">✗ Ксенон</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar">
+                    <div class="contact-card">
+                        <div class="seller-info">
+                            <div class="seller-name">Автосалон "Грузия Авто"</div>
+                            <div class="seller-rating">⭐⭐⭐⭐⭐ 4.8 (127 отзывов)</div>
+                        </div>
+                        <div class="contact-buttons">
+                            <a href="tel:+995555123456" class="contact-btn btn-call">
+                                📞 Позвонить
+                            </a>
+                            <a href="#" class="contact-btn btn-message">
+                                💬 Написать
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="seller-description">
+                        <h4 class="description-title">Комментарий продавца</h4>
+                        <p class="description-text">
+                            Отличное состояние, один владелец, полная сервисная история. 
+                            Машина находится в Тбилиси, возможен осмотр в любое время. 
+                            Помогаем с оформлением документов и доставкой в Казахстан. 
+                            Гарантируем юридическую чистоту сделки.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Данные автомобиля
+        const carData = {
+            images: [
+                'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800&h=400&fit=crop',
+                'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&h=400&fit=crop',
+                'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&h=400&fit=crop'
+            ],
+            favorites: 18
+        };
+
+        let isInFavorites = false;
+        let featuresExpanded = false;
+
+        // Инициализация галереи
+        function initGallery() {
+            const thumbnailsContainer = document.getElementById('thumbnails');
+            
+            carData.images.forEach((image, index) => {
+                const thumbnail = document.createElement('img');
+                thumbnail.src = image;
+                thumbnail.alt = `Фото ${index + 1}`;
+                thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+                thumbnail.onclick = () => changeMainImage(image, index);
+                thumbnailsContainer.appendChild(thumbnail);
+            });
+        }
+
+        function changeMainImage(imageSrc, index) {
+            document.getElementById('main-image').src = imageSrc;
+            
+            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+
+        function toggleFavorite() {
+            isInFavorites = !isInFavorites;
+            const button = document.querySelector('.favorite-button');
+            const countSpan = document.getElementById('favorite-count');
+            
+            if (isInFavorites) {
+                carData.favorites++;
+                button.style.background = '#e74c3c';
+                button.innerHTML = `❤️ <span id="favorite-count">${carData.favorites}</span> В избранном`;
+            } else {
+                carData.favorites--;
+                button.style.background = '#e74c3c';
+                button.innerHTML = `♡ <span id="favorite-count">${carData.favorites}</span> В избранное`;
+            }
+        }
+
+        function toggleFeatures() {
+            featuresExpanded = !featuresExpanded;
+            const fullFeatures = document.getElementById('features-full');
+            const toggleBtn = document.querySelector('.toggle-features');
+            
+            if (featuresExpanded) {
+                fullFeatures.style.display = 'grid';
+                toggleBtn.textContent = 'Свернуть';
+            } else {
+                fullFeatures.style.display = 'none';
+                toggleBtn.textContent = 'Развернуть';
+            }
+        }
+
+        // Проверяем авторизацию
+        function checkAuthStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const authBtn = document.getElementById('auth-btn');
+            const profileBtn = document.getElementById('profile-btn');
+            
+            if (isLoggedIn) {
+                authBtn.style.display = 'none';
+                profileBtn.style.display = 'block';
+                
+                const userData = JSON.parse(localStorage.getItem('user'));
+                if (userData) {
+                    profileBtn.textContent = `👤 ${userData.name}`;
+                }
+            } else {
+                authBtn.style.display = 'block';
+                profileBtn.style.display = 'none';
+            }
+        }
+
+        // Инициализация
+        initGallery();
+        checkAuthStatus();
+        
+        // Мобильное меню
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+
+            // Закрытие меню при клике на ссылку
+            document.querySelectorAll('.nav__link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Закрытие меню при клике вне его
+            document.addEventListener('click', (e) => {
+                if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

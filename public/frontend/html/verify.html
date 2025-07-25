@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Подтверждение номера — KazGruz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #ecf0f1 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .verify-container {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .verify-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .verify-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .verify-subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .phone-display {
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .code-input-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .code-digit {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            transition: border-color 0.3s;
+        }
+        
+        .code-digit:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .code-digit.filled {
+            border-color: #27ae60;
+            background: #d5f4e6;
+        }
+        
+        .btn-verify {
+            width: 100%;
+            padding: 14px;
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .btn-verify:hover {
+            background: #219a52;
+        }
+        
+        .btn-verify:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .resend-container {
+            margin-top: 20px;
+        }
+        
+        .resend-text {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .resend-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .resend-link:hover {
+            color: #2980b9;
+        }
+        
+        .timer {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
+        
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .error-message {
+            background: #e74c3c;
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .success-message {
+            background: #27ae60;
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .verify-container {
+                padding: 30px 20px;
+                max-width: 100%;
+                margin: 0;
+                border-radius: 15px;
+            }
+            
+            .verify-icon {
+                font-size: 3rem;
+                margin-bottom: 15px;
+            }
+            
+            .verify-title {
+                font-size: 1.5rem;
+                margin-bottom: 8px;
+            }
+            
+            .verify-subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 25px;
+            }
+            
+            .phone-display {
+                padding: 8px;
+                font-size: 0.9rem;
+                margin-bottom: 25px;
+            }
+            
+            .code-input-container {
+                gap: 8px;
+                margin-bottom: 25px;
+            }
+            
+            .code-digit {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                border-radius: 8px;
+            }
+            
+            .btn-verify {
+                padding: 12px;
+                font-size: 1rem;
+            }
+            
+            .resend-text {
+                font-size: 0.8rem;
+            }
+            
+            .back-link {
+                position: fixed;
+                top: 15px;
+                left: 15px;
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .verify-container {
+                padding: 25px 15px;
+                border-radius: 12px;
+            }
+            
+            .verify-icon {
+                font-size: 2.5rem;
+            }
+            
+            .verify-title {
+                font-size: 1.3rem;
+            }
+            
+            .code-digit {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .code-input-container {
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="register.html" class="back-link">← Назад</a>
+    
+    <div class="verify-container">
+        <div class="verify-icon">📱</div>
+        <h1 class="verify-title">Подтверждение номера</h1>
+        <p class="verify-subtitle">Мы отправили 6-значный код подтверждения на ваш номер телефона</p>
+        
+        <div class="phone-display" id="phone-display"></div>
+        
+        <div class="error-message" id="error-message"></div>
+        <div class="success-message" id="success-message"></div>
+        
+        <div class="code-input-container">
+            <input type="text" class="code-digit" maxlength="1" id="digit1">
+            <input type="text" class="code-digit" maxlength="1" id="digit2">
+            <input type="text" class="code-digit" maxlength="1" id="digit3">
+            <input type="text" class="code-digit" maxlength="1" id="digit4">
+            <input type="text" class="code-digit" maxlength="1" id="digit5">
+            <input type="text" class="code-digit" maxlength="1" id="digit6">
+        </div>
+        
+        <button class="btn-verify" id="verify-btn" disabled>Подтвердить</button>
+        
+        <div class="resend-container">
+            <p class="resend-text">Не получили код?</p>
+            <a href="#" class="resend-link" id="resend-link">
+                Отправить повторно <span class="timer" id="timer">(60)</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Загружаем данные пользователя
+        const tempUser = JSON.parse(localStorage.getItem('tempUser'));
+        if (!tempUser) {
+            window.location.href = 'register.html';
+        }
+        
+        document.getElementById('phone-display').textContent = tempUser.phone;
+        
+        // Правильный код (любые 6 цифр подойдут для эмуляции)
+        const correctCode = '123456';
+        
+        // Управление вводом кода
+        const digits = document.querySelectorAll('.code-digit');
+        const verifyBtn = document.getElementById('verify-btn');
+        
+        digits.forEach((digit, index) => {
+            digit.addEventListener('input', function(e) {
+                // Разрешаем только цифры
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                if (this.value) {
+                    this.classList.add('filled');
+                    // Переход к следующему полю
+                    if (index < digits.length - 1) {
+                        digits[index + 1].focus();
+                    }
+                } else {
+                    this.classList.remove('filled');
+                }
+                
+                checkCodeComplete();
+            });
+            
+            digit.addEventListener('keydown', function(e) {
+                // Backspace - переход к предыдущему полю
+                if (e.key === 'Backspace' && !this.value && index > 0) {
+                    digits[index - 1].focus();
+                }
+            });
+            
+            digit.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const pastedData = e.clipboardData.getData('text');
+                const numbers = pastedData.replace(/[^0-9]/g, '').substring(0, 6);
+                
+                for (let i = 0; i < numbers.length && (index + i) < digits.length; i++) {
+                    digits[index + i].value = numbers[i];
+                    digits[index + i].classList.add('filled');
+                }
+                
+                checkCodeComplete();
+            });
+        });
+        
+        function checkCodeComplete() {
+            const code = Array.from(digits).map(d => d.value).join('');
+            verifyBtn.disabled = code.length !== 6;
+        }
+        
+        // Подтверждение кода
+        verifyBtn.addEventListener('click', function() {
+            const enteredCode = Array.from(digits).map(d => d.value).join('');
+            
+            // Любой 6-значный код подойдет
+            if (enteredCode.length === 6) {
+                // Создаем полные данные пользователя
+                const userData = {
+                    login: tempUser.login,
+                    email: tempUser.email,
+                    phone: tempUser.phone,
+                    name: generateRandomName(),
+                    avatar: generateAvatar(tempUser.login),
+                    memberSince: new Date().getFullYear().toString(),
+                    totalOrders: 0,
+                    activeOrders: 0,
+                    verified: true
+                };
+                
+                localStorage.setItem('user', JSON.stringify(userData));
+                localStorage.removeItem('tempUser');
+                
+                showSuccess('Номер подтвержден! Регистрация завершена успешно!');
+                
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            } else {
+                showError('Введите 6-значный код');
+            }
+        });
+        
+        // Таймер для повторной отправки
+        let timeLeft = 60;
+        const timerElement = document.getElementById('timer');
+        const resendLink = document.getElementById('resend-link');
+        
+        function updateTimer() {
+            timerElement.textContent = `(${timeLeft})`;
+            if (timeLeft <= 0) {
+                timerElement.style.display = 'none';
+                resendLink.style.pointerEvents = 'auto';
+                resendLink.style.opacity = '1';
+            } else {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            }
+        }
+        
+        updateTimer();
+        
+        resendLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (timeLeft <= 0) {
+                timeLeft = 60;
+                timerElement.style.display = 'inline';
+                resendLink.style.pointerEvents = 'none';
+                resendLink.style.opacity = '0.5';
+                updateTimer();
+                showSuccess('Код отправлен повторно!');
+            }
+        });
+        
+        function generateRandomName() {
+            return 'Алексей Смирнов';
+        }
+        
+        function generateAvatar(login) {
+            const initials = login.substring(0, 2).toUpperCase();
+            return `https://via.placeholder.com/150/3498db/ffffff?text=${initials}`;
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('success-message').style.display = 'none';
+        }
+        
+        function showSuccess(message) {
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+        }
+        
+        // Фокус на первое поле при загрузке
+        digits[0].focus();
+    </script>
+</body>
+</html>

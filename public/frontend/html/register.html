@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Вход — KazGruz</title>
+    <title>Регистрация — KazGruz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/style.css">
     <style>
@@ -21,7 +21,7 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             padding: 40px;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             text-align: center;
         }
         
@@ -67,10 +67,10 @@
             border-color: #3498db;
         }
         
-        .btn-login {
+        .btn-register {
             width: 100%;
             padding: 14px;
-            background: #3498db;
+            background: #27ae60;
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -81,15 +81,13 @@
             margin-top: 10px;
         }
         
-        .btn-login:hover {
-            background: #2980b9;
+        .btn-register:hover {
+            background: #219a52;
         }
         
         .auth-links {
             margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
         }
         
         .auth-link {
@@ -140,6 +138,14 @@
             display: none;
         }
         
+        .password-match {
+            border-color: #27ae60 !important;
+        }
+        
+        .password-mismatch {
+            border-color: #e74c3c !important;
+        }
+        
         /* Мобильная адаптация */
         @media (max-width: 768px) {
             body {
@@ -172,7 +178,7 @@
                 font-size: 1rem;
             }
             
-            .btn-auth {
+            .btn-register {
                 padding: 12px;
                 font-size: 1rem;
             }
@@ -203,63 +209,127 @@
     
     <div class="auth-container">
         <div class="auth-logo">KazGruz</div>
-        <p class="auth-subtitle">Войдите в свой аккаунт</p>
+        <p class="auth-subtitle">Создайте новый аккаунт</p>
         
         <div class="error-message" id="error-message"></div>
         <div class="success-message" id="success-message"></div>
         
-        <form id="login-form">
+        <form id="register-form">
             <div class="form-group">
-                <label class="form-label">Логин или Email</label>
-                <input type="text" class="form-input" id="login" placeholder="Введите логин или email" required>
+                <label class="form-label">Логин</label>
+                <input type="text" class="form-input" id="login" placeholder="Придумайте логин" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" id="email" placeholder="Введите email" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Номер телефона</label>
+                <input type="tel" class="form-input" id="phone" placeholder="+7 (___) ___-__-__" required>
             </div>
             
             <div class="form-group">
                 <label class="form-label">Пароль</label>
-                <input type="password" class="form-input" id="password" placeholder="Введите пароль" required>
+                <input type="password" class="form-input" id="password" placeholder="Придумайте пароль" required>
             </div>
             
-            <button type="submit" class="btn-login">Войти</button>
+            <div class="form-group">
+                <label class="form-label">Подтвердите пароль</label>
+                <input type="password" class="form-input" id="confirm-password" placeholder="Повторите пароль" required>
+            </div>
+            
+            <button type="submit" class="btn-register">Зарегистрироваться</button>
         </form>
         
         <div class="auth-links">
-            <a href="#" class="auth-link" onclick="showForgotPassword()">Забыли пароль?</a>
-            <a href="register.html" class="auth-link">Зарегистрироваться</a>
+            <p>Уже есть аккаунт? <a href="login.html" class="auth-link">Войти</a></p>
         </div>
     </div>
 
     <script>
-        document.getElementById('login-form').addEventListener('submit', function(e) {
+        // Форматирование номера телефона
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.startsWith('7')) value = value.substring(1);
+            if (value.startsWith('8')) value = value.substring(1);
+            
+            let formatted = '+7';
+            if (value.length > 0) formatted += ' (' + value.substring(0, 3);
+            if (value.length > 3) formatted += ') ' + value.substring(3, 6);
+            if (value.length > 6) formatted += '-' + value.substring(6, 8);
+            if (value.length > 8) formatted += '-' + value.substring(8, 10);
+            
+            e.target.value = formatted;
+        });
+        
+        // Проверка совпадения паролей
+        document.getElementById('confirm-password').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword === '') {
+                this.classList.remove('password-match', 'password-mismatch');
+            } else if (password === confirmPassword) {
+                this.classList.remove('password-mismatch');
+                this.classList.add('password-match');
+            } else {
+                this.classList.remove('password-match');
+                this.classList.add('password-mismatch');
+            }
+        });
+        
+        document.getElementById('register-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const login = document.getElementById('login').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
             const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
             
-            // Простая эмуляция входа - любые данные подходят
-            if (login.trim() && password.trim()) {
-                // Сохраняем данные пользователя
-                const userData = {
-                    login: login,
-                    email: login.includes('@') ? login : login + '@kazgruz.kz',
-                    name: 'Алексей Смирнов',
-                    phone: '+7 (707) 555-12-34',
-                    avatar: 'https://via.placeholder.com/150/3498db/ffffff?text=AS',
-                    memberSince: '2024',
-                    totalOrders: 0,
-                    activeOrders: 0
-                };
-                
-                localStorage.setItem('user', JSON.stringify(userData));
-                localStorage.setItem('isLoggedIn', 'true');
-                
-                showSuccess('Вход выполнен успешно! Перенаправление...');
-                
-                setTimeout(() => {
-                    window.location.href = 'profile.html';
-                }, 1500);
-            } else {
-                showError('Пожалуйста, заполните все поля');
+            // Валидация
+            if (!login.trim()) {
+                showError('Введите логин');
+                return;
             }
+            
+            if (!email.trim()) {
+                showError('Введите email');
+                return;
+            }
+            
+            if (phone.length < 18) {
+                showError('Введите корректный номер телефона');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('Пароль должен содержать минимум 6 символов');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showError('Пароли не совпадают');
+                return;
+            }
+            
+            // Сохраняем данные для подтверждения
+            const tempUserData = {
+                login: login,
+                email: email,
+                phone: phone,
+                password: password
+            };
+            
+            localStorage.setItem('tempUser', JSON.stringify(tempUserData));
+            
+            showSuccess('Данные сохранены! Переход к подтверждению...');
+            
+            setTimeout(() => {
+                window.location.href = 'verify.html';
+            }, 1500);
         });
         
         function showError(message) {
@@ -274,15 +344,6 @@
             successDiv.textContent = message;
             successDiv.style.display = 'block';
             document.getElementById('error-message').style.display = 'none';
-        }
-        
-        function showForgotPassword() {
-            alert('Функция восстановления пароля будет доступна в ближайшее время!');
-        }
-        
-        // Проверяем, если пользователь уже вошел
-        if (localStorage.getItem('isLoggedIn') === 'true') {
-            window.location.href = 'profile.html';
         }
     </script>
 </body>

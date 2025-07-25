@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог автомобилей — KazGruz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/style.css">
+    <style>
+        body {
+            background: #f8f9fa;
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .main-content {
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        .catalog-header {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .catalog-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .catalog-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .catalog-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+        }
+        
+        .filters-sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            height: fit-content;
+            position: sticky;
+            top: 110px;
+        }
+        
+        .filter-section {
+            margin-bottom: 25px;
+        }
+        
+        .filter-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+        }
+        
+        .filter-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .filter-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .price-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .price-range span {
+            color: #7f8c8d;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+        
+        .price-input {
+            flex: 1;
+            padding: 8px 10px;
+            border: 2px solid #ecf0f1;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .price-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        
+        .reset-filters {
+            width: 100%;
+            padding: 12px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .reset-filters:hover {
+            background: #c0392b;
+        }
+        
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .car-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .car-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            position: relative;
+        }
+        
+        .car-image-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .favorite-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+        
+        .favorite-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+        
+        .favorite-btn.active {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .car-status {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #27ae60;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .car-content {
+            padding: 20px;
+        }
+        
+        .car-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .car-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 15px;
+        }
+        
+        .car-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .car-detail {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+        
+        .car-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #ecf0f1;
+            font-size: 0.8rem;
+            color: #95a5a6;
+        }
+        
+        .car-stats {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .results-count {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .sort-select {
+            padding: 8px 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .filter-toggle {
+            display: none;
+        }
+        
+        @media (max-width: 1024px) {
+            .catalog-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-sidebar {
+                position: static;
+                margin-bottom: 20px;
+            }
+            
+            .cars-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding-top: 60px;
+            }
+            
+            .catalog-header {
+                padding: 20px 0;
+            }
+            
+            .catalog-title {
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+            }
+            
+            .catalog-subtitle {
+                font-size: 1rem;
+            }
+            
+            .catalog-container {
+                padding: 20px 15px;
+                gap: 20px;
+            }
+            
+            .filters-sidebar {
+                order: 2;
+                position: relative;
+                top: auto;
+                padding: 20px 15px;
+                margin-bottom: 0;
+            }
+            
+            .filter-title {
+                font-size: 1rem;
+                margin-bottom: 12px;
+            }
+            
+            .filter-section {
+                margin-bottom: 20px;
+            }
+            
+            .cars-content {
+                order: 1;
+            }
+            
+            .cars-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .car-card {
+                border-radius: 12px;
+            }
+            
+            .car-image {
+                height: 200px;
+            }
+            
+            .filter-toggle {
+                display: block;
+                width: 100%;
+                background: #3498db;
+                color: white;
+                border: none;
+                padding: 12px;
+                border-radius: 8px;
+                font-size: 1rem;
+                margin-bottom: 15px;
+                cursor: pointer;
+            }
+            
+            .filters-content {
+                display: none;
+            }
+            
+            .filters-content.active {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .catalog-container {
+                padding: 15px 10px;
+            }
+            
+            .filters-sidebar {
+                padding: 15px 10px;
+            }
+            
+            .car-card {
+                margin: 0 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__container">
+            <div class="logo">KazGruz</div>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav class="nav" id="nav-menu">
+                <a href="../../index.html" class="nav__link">Главная</a>
+                <a href="catalog.html" class="nav__link active">Каталог</a>
+                <a href="#" class="nav__link">О нас</a>
+                <a href="login.html" class="nav__link nav__login-btn" id="auth-btn">Вход / Регистрация</a>
+                <a href="profile.html" class="nav__link nav__profile-btn" id="profile-btn" style="display: none;">Личный кабинет</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="catalog-header">
+            <div class="container">
+                <h1 class="catalog-title">Каталог автомобилей</h1>
+                <p class="catalog-subtitle">Найдите идеальный автомобиль из Грузии</p>
+            </div>
+        </section>
+
+        <div class="catalog-container">
+            <aside class="filters-sidebar">
+                <button class="filter-toggle" id="filter-toggle">🔍 Показать фильтры</button>
+                <div class="filters-content" id="filters-content">
+                    <div class="filter-section">
+                        <h3 class="filter-title">🔍 Поиск</h3>
+                        <input type="text" class="filter-input" placeholder="Марка, модель..." id="search-input">
+                    </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-title">🚗 Марка</h3>
+                    <select class="filter-select" id="brand-filter">
+                        <option value="">Все марки</option>
+                        <option value="Toyota">Toyota</option>
+                        <option value="BMW">BMW</option>
+                        <option value="Mercedes">Mercedes-Benz</option>
+                        <option value="Audi">Audi</option>
+                        <option value="Volkswagen">Volkswagen</option>
+                        <option value="Honda">Honda</option>
+                        <option value="Nissan">Nissan</option>
+                        <option value="Hyundai">Hyundai</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-title">💰 Цена (USD)</h3>
+                    <div class="price-range">
+                        <input type="number" class="price-input" placeholder="От" id="price-from">
+                        <span>—</span>
+                        <input type="number" class="price-input" placeholder="До" id="price-to">
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-title">📅 Год выпуска</h3>
+                    <div class="price-range">
+                        <input type="number" class="price-input" placeholder="От" id="year-from" min="1990" max="2025">
+                        <span>—</span>
+                        <input type="number" class="price-input" placeholder="До" id="year-to" min="1990" max="2025">
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-title">⛽ Тип топлива</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Бензин" class="fuel-filter">
+                            <span>Бензин</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Дизель" class="fuel-filter">
+                            <span>Дизель</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Гибрид" class="fuel-filter">
+                            <span>Гибрид</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Электро" class="fuel-filter">
+                            <span>Электро</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-title">🚙 Кузов</h3>
+                    <select class="filter-select" id="body-filter">
+                        <option value="">Любой</option>
+                        <option value="Седан">Седан</option>
+                        <option value="Хэтчбек">Хэтчбек</option>
+                        <option value="Универсал">Универсал</option>
+                        <option value="Внедорожник">Внедорожник</option>
+                        <option value="Кроссовер">Кроссовер</option>
+                        <option value="Купе">Купе</option>
+                        <option value="Кабриолет">Кабриолет</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-title">⚙️ КПП</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Механика" class="transmission-filter">
+                            <span>Механика</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Автомат" class="transmission-filter">
+                            <span>Автомат</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Вариатор" class="transmission-filter">
+                            <span>Вариатор</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-title">📋 Состояние</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Растаможен" class="status-filter">
+                            <span>Растаможен</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Не растаможен" class="status-filter">
+                            <span>Не растаможен</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button class="reset-filters" onclick="resetFilters()">Сбросить фильтры</button>
+                </div>
+            </aside>
+
+            <div class="cars-section">
+                <div class="results-header">
+                    <div class="results-count" id="results-count">Найдено: 3 автомобиля</div>
+                    <select class="sort-select" id="sort-select">
+                        <option value="price-asc">Цена: по возрастанию</option>
+                        <option value="price-desc">Цена: по убыванию</option>
+                        <option value="year-desc">Год: новые сначала</option>
+                        <option value="year-asc">Год: старые сначала</option>
+                        <option value="views-desc">По популярности</option>
+                    </select>
+                </div>
+
+                <div class="cars-grid" id="cars-grid">
+                    <!-- Здесь будут карточки автомобилей -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Пример данных автомобилей
+        const cars = [
+            {
+                id: 1,
+                brand: 'Toyota',
+                model: 'Camry',
+                year: 2020,
+                price: 25000,
+                currency: 'USD',
+                fuel: 'Бензин',
+                engine: '2.5L',
+                transmission: 'Автомат',
+                body: 'Седан',
+                color: 'Белый',
+                mileage: 45000,
+                status: 'Растаможен',
+                location: 'Тбилиси',
+                views: 127,
+                favorites: 18,
+                posted: '2 дня назад',
+                seller: 'Автосалон "Грузия Авто"',
+                description: 'Отличное состояние, один владелец, полная сервисная история.',
+                images: [
+                    'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400&h=250&fit=crop',
+                    'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=400&h=250&fit=crop',
+                    'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=400&h=250&fit=crop'
+                ],
+                features: {
+                    'Климат-контроль': true,
+                    'Кожаный салон': true,
+                    'Подогрев сидений': true,
+                    'Bluetooth': true,
+                    'Камера заднего вида': true,
+                    'Круиз-контроль': true,
+                    'Парктроники': true,
+                    'Люк': false
+                }
+            },
+            {
+                id: 2,
+                brand: 'BMW',
+                model: 'X5',
+                year: 2019,
+                price: 45000,
+                currency: 'USD',
+                fuel: 'Дизель',
+                engine: '3.0L',
+                transmission: 'Автомат',
+                body: 'Внедорожник',
+                color: 'Черный',
+                mileage: 32000,
+                status: 'Не растаможен',
+                location: 'Батуми',
+                views: 89,
+                favorites: 12,
+                posted: '1 день назад',
+                seller: 'BMW Грузия',
+                description: 'Премиум внедорожник в отличном состоянии.',
+                images: [
+                    'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=250&fit=crop'
+                ]
+            },
+            {
+                id: 3,
+                brand: 'Honda',
+                model: 'Civic',
+                year: 2021,
+                price: 22000,
+                currency: 'USD',
+                fuel: 'Бензин',
+                engine: '1.5L',
+                transmission: 'Механика',
+                body: 'Хэтчбек',
+                color: 'Синий',
+                mileage: 18000,
+                status: 'Растаможен',
+                location: 'Тбилиси',
+                views: 156,
+                favorites: 24,
+                posted: '5 дней назад',
+                seller: 'Honda Center',
+                description: 'Молодежный автомобиль, экономичный расход.',
+                images: [
+                    'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=400&h=250&fit=crop'
+                ]
+            }
+        ];
+
+        let filteredCars = [...cars];
+
+        function renderCars(carsArray = filteredCars) {
+            const grid = document.getElementById('cars-grid');
+            const resultsCount = document.getElementById('results-count');
+            
+            resultsCount.textContent = `Найдено: ${carsArray.length} ${getCarWord(carsArray.length)}`;
+            
+            grid.innerHTML = carsArray.map(car => `
+                <div class="car-card" onclick="openCarDetail(${car.id})">
+                    <div class="car-image-container">
+                        <img src="${car.images[0]}" alt="${car.brand} ${car.model}" class="car-image">
+                        <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite(${car.id})">
+                            ♡
+                        </button>
+                        <div class="car-status">${car.status}</div>
+                    </div>
+                    <div class="car-content">
+                        <h3 class="car-title">${car.brand} ${car.model} ${car.year}</h3>
+                        <div class="car-price">$${car.price.toLocaleString()}</div>
+                        <div class="car-details">
+                            <div class="car-detail">
+                                <span>🛣️</span>
+                                <span>${car.mileage.toLocaleString()} км</span>
+                            </div>
+                            <div class="car-detail">
+                                <span>⛽</span>
+                                <span>${car.fuel}</span>
+                            </div>
+                            <div class="car-detail">
+                                <span>⚙️</span>
+                                <span>${car.transmission}</span>
+                            </div>
+                            <div class="car-detail">
+                                <span>🎨</span>
+                                <span>${car.color}</span>
+                            </div>
+                        </div>
+                        <div class="car-meta">
+                            <span>${car.posted}</span>
+                            <div class="car-stats">
+                                <span>👁️ ${car.views}</span>
+                                <span>❤️ ${car.favorites}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getCarWord(count) {
+            if (count % 10 === 1 && count % 100 !== 11) return 'автомобиль';
+            if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) return 'автомобиля';
+            return 'автомобилей';
+        }
+
+        function toggleFavorite(carId) {
+            // Логика добавления/удаления из избранного
+            console.log('Toggle favorite for car:', carId);
+        }
+
+        function openCarDetail(carId) {
+            localStorage.setItem('selectedCarId', carId);
+            window.location.href = 'car-detail.html';
+        }
+
+        function resetFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('brand-filter').value = '';
+            document.getElementById('price-from').value = '';
+            document.getElementById('price-to').value = '';
+            document.getElementById('year-from').value = '';
+            document.getElementById('year-to').value = '';
+            document.getElementById('body-filter').value = '';
+            
+            document.querySelectorAll('.fuel-filter, .transmission-filter, .status-filter').forEach(cb => {
+                cb.checked = false;
+            });
+            
+            filteredCars = [...cars];
+            renderCars();
+        }
+
+        // Добавляем обработчики для фильтров
+        function setupFilters() {
+            // Поиск
+            document.getElementById('search-input').addEventListener('input', applyFilters);
+            
+            // Селекты
+            document.getElementById('brand-filter').addEventListener('change', applyFilters);
+            document.getElementById('body-filter').addEventListener('change', applyFilters);
+            document.getElementById('sort-select').addEventListener('change', applySorting);
+            
+            // Цена и год
+            document.getElementById('price-from').addEventListener('input', applyFilters);
+            document.getElementById('price-to').addEventListener('input', applyFilters);
+            document.getElementById('year-from').addEventListener('input', applyFilters);
+            document.getElementById('year-to').addEventListener('input', applyFilters);
+            
+            // Чекбоксы
+            document.querySelectorAll('.fuel-filter, .transmission-filter, .status-filter').forEach(checkbox => {
+                checkbox.addEventListener('change', applyFilters);
+            });
+        }
+
+        function applyFilters() {
+            filteredCars = cars.filter(car => {
+                // Поиск по названию
+                const searchTerm = document.getElementById('search-input').value.toLowerCase();
+                const carName = `${car.brand} ${car.model}`.toLowerCase();
+                if (searchTerm && !carName.includes(searchTerm)) return false;
+                
+                // Марка
+                const selectedBrand = document.getElementById('brand-filter').value;
+                if (selectedBrand && car.brand !== selectedBrand) return false;
+                
+                // Цена
+                const priceFrom = document.getElementById('price-from').value;
+                const priceTo = document.getElementById('price-to').value;
+                if (priceFrom && car.price < parseInt(priceFrom)) return false;
+                if (priceTo && car.price > parseInt(priceTo)) return false;
+                
+                // Год
+                const yearFrom = document.getElementById('year-from').value;
+                const yearTo = document.getElementById('year-to').value;
+                if (yearFrom && car.year < parseInt(yearFrom)) return false;
+                if (yearTo && car.year > parseInt(yearTo)) return false;
+                
+                // Тип кузова
+                const selectedBody = document.getElementById('body-filter').value;
+                if (selectedBody && car.body !== selectedBody) return false;
+                
+                // Топливо
+                const selectedFuels = Array.from(document.querySelectorAll('.fuel-filter:checked')).map(cb => cb.value);
+                if (selectedFuels.length > 0 && !selectedFuels.includes(car.fuel)) return false;
+                
+                // КПП
+                const selectedTransmissions = Array.from(document.querySelectorAll('.transmission-filter:checked')).map(cb => cb.value);
+                if (selectedTransmissions.length > 0 && !selectedTransmissions.includes(car.transmission)) return false;
+                
+                // Статус
+                const selectedStatuses = Array.from(document.querySelectorAll('.status-filter:checked')).map(cb => cb.value);
+                if (selectedStatuses.length > 0 && !selectedStatuses.includes(car.status)) return false;
+                
+                return true;
+            });
+            
+            applySorting();
+        }
+
+        function applySorting() {
+            const sortBy = document.getElementById('sort-select').value;
+            
+            filteredCars.sort((a, b) => {
+                switch (sortBy) {
+                    case 'price-asc':
+                        return a.price - b.price;
+                    case 'price-desc':
+                        return b.price - a.price;
+                    case 'year-asc':
+                        return a.year - b.year;
+                    case 'year-desc':
+                        return b.year - a.year;
+                    case 'views-desc':
+                        return b.views - a.views;
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderCars();
+        }
+
+        // Проверяем авторизацию для кнопок профиля
+        function checkAuthStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const authBtn = document.getElementById('auth-btn');
+            const profileBtn = document.getElementById('profile-btn');
+            
+            if (isLoggedIn) {
+                authBtn.style.display = 'none';
+                profileBtn.style.display = 'block';
+                
+                const userData = JSON.parse(localStorage.getItem('user'));
+                if (userData) {
+                    profileBtn.textContent = `👤 ${userData.name}`;
+                }
+            } else {
+                authBtn.style.display = 'block';
+                profileBtn.style.display = 'none';
+            }
+        }
+
+        // Инициализация
+        checkAuthStatus();
+        setupFilters();
+        renderCars();
+        
+        // Мобильные функции
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        const filterToggle = document.getElementById('filter-toggle');
+        const filtersContent = document.getElementById('filters-content');
+
+        // Мобильное меню
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+
+            // Закрытие меню при клике на ссылку
+            document.querySelectorAll('.nav__link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Закрытие меню при клике вне его
+            document.addEventListener('click', (e) => {
+                if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                }
+            });
+        }
+
+        // Мобильные фильтры
+        if (filterToggle) {
+            filterToggle.addEventListener('click', () => {
+                filtersContent.classList.toggle('active');
+                const isActive = filtersContent.classList.contains('active');
+                filterToggle.textContent = isActive ? '❌ Скрыть фильтры' : '🔍 Показать фильтры';
+            });
+        }
+    </script>
+</body>
+</html>

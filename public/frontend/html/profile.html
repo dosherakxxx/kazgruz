@@ -2,83 +2,395 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Личный кабинет продавца — KazGruz</title>
+    <title>Личный кабинет — KazGruz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/style.css">
-
-
     <style>
-        .seller-container {
-            max-width: 900px;
-            margin: 40px auto;
+        body {
+            background: #f8f9fa;
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .header {
             background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-            padding: 32px 28px 24px 28px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
         }
-        .seller-header {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 18px;
+        
+        .main-content {
+            padding-top: 80px;
+            min-height: 100vh;
         }
-        .car-list {
-            margin-top: 24px;
+        
+        .profile-hero {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
         }
-        .car-item {
-            background: #f7f7f9;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 18px;
-            display: flex;
-            gap: 18px;
-            align-items: flex-start;
-        }
-        .car-item img {
+        
+        .profile-avatar {
             width: 120px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 6px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         }
-        .car-info {
+        
+        .profile-name {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .profile-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .verified-badge {
+            background: #27ae60;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .dashboard {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .profile-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .section-content {
+            padding: 25px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .info-value {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .recent-activity {
+            grid-column: 1 / -1;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .activity-car {
+            background: #e8f5e8;
+            color: #27ae60;
+        }
+        
+        .activity-heart {
+            background: #ffeaa7;
+            color: #f39c12;
+        }
+        
+        .activity-user {
+            background: #ddd6fe;
+            color: #8b5cf6;
+        }
+        
+        .activity-content {
             flex: 1;
         }
-        .car-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .car-actions button {
-            width: 100px;
-        }
-        .add-car-form, .edit-car-form {
-            margin-top: 24px;
-            background: #f7f7f9;
-            border-radius: 8px;
-            padding: 18px 16px;
-        }
-        .add-car-form h3, .edit-car-form h3 {
-            margin-top: 0;
-        }
-        .add-car-form label, .edit-car-form label {
-            display: block;
+        
+        .activity-title {
+            font-weight: 600;
+            color: #2c3e50;
             margin-bottom: 4px;
-            font-size: 0.98rem;
         }
-        .add-car-form input, .add-car-form select,
-        .edit-car-form input, .edit-car-form select {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 7px 10px;
-            border-radius: 6px;
-            border: 1px solid #e3e3e3;
-            font-size: 1rem;
+        
+        .activity-time {
+            font-size: 0.8rem;
+            color: #95a5a6;
         }
-        .add-car-form button, .edit-car-form button {
-            margin-top: 8px;
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
         }
-        @media (max-width: 700px) {
-            .car-item { flex-direction: column; align-items: stretch; }
-            .car-actions { flex-direction: row; gap: 10px; }
+        
+        .btn-action {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+        
+        .btn-secondary {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+        
+        .btn-secondary:hover {
+            background: #d5dbdb;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .quick-actions {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .quick-action {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #2c3e50;
+            transition: all 0.3s;
+        }
+        
+        .quick-action:hover {
+            border-color: #3498db;
+            background: #f8f9fa;
+        }
+        
+        .quick-action-icon {
+            font-size: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding-top: 60px;
+            }
+            
+            .profile-hero {
+                padding: 25px 0;
+            }
+            
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 15px;
+            }
+            
+            .profile-name {
+                font-size: 1.4rem;
+                margin-bottom: 8px;
+            }
+            
+            .profile-email {
+                font-size: 0.9rem;
+            }
+            
+            .dashboard {
+                margin-top: -15px;
+                padding: 0 15px;
+            }
+            
+            .profile-sections {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .profile-section {
+                padding: 20px 15px;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+                margin-bottom: 15px;
+            }
+            
+            .quick-actions-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .action-button {
+                padding: 12px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .stat-item {
+                padding: 15px;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            .stat-label {
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .dashboard {
+                padding: 0 10px;
+            }
+            
+            .profile-sections {
+                gap: 15px;
+            }
+            
+            .profile-section {
+                padding: 15px 10px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .profile-name {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
@@ -86,200 +398,238 @@
     <header class="header">
         <div class="container header__container">
             <div class="logo">KazGruz</div>
-            <nav class="nav">
-    <a href="../../index.html" class="nav__link">Главная</a>
-    <a href="../../index.html#catalog" class="nav__link">Каталог</a>
-    <a href="login.html" class="nav__link nav__login-btn">Вход / Регистрация</a>
-</nav>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav class="nav" id="nav-menu">
+                <a href="../../index.html" class="nav__link">Главная</a>
+                <a href="catalog.html" class="nav__link">Каталог</a>
+                <a href="#" class="nav__link" onclick="logout()">Выйти</a>
+            </nav>
         </div>
     </header>
-    <div class="seller-container">
-        <div class="seller-header">Личный кабинет продавца</div>
-        <div id="car-list" class="car-list"></div>
-        <form id="add-car-form" class="add-car-form">
-            <h3>Добавить автомобиль</h3>
-            <label>Фото (URL): <input name="img" type="url" required></label>
-            <label>Марка: <input name="brand" required></label>
-            <label>Модель: <input name="model" required></label>
-            <label>Двигатель: <input name="engine" required></label>
-            <label>Объем (литр): <input name="liter" type="number" step="0.1" required></label>
-            <label>Тип двигателя: 
-                <select name="type" required>
-                    <option>Бензин</option>
-                    <option>Дизель</option>
-                    <option>Гибрид</option>
-                    <option>Электро</option>
-                </select>
-            </label>
-            <label>Пробег (км): <input name="mileage" type="number" required></label>
-            <label>Страна производства: <input name="country" required></label>
-            <label>Кузов: <input name="body" required></label>
-            <label>Кол-во мест: <input name="seats" type="number" required></label>
-            <label>Руль: 
-                <select name="wheel" required>
-                    <option>Левый</option>
-                    <option>Правый</option>
-                </select>
-            </label>
-            <label>Цвет: <input name="color" required></label>
-            <label>Коробка передач: 
-                <select name="gearbox" required>
-                    <option>Автомат</option>
-                    <option>Механика</option>
-                </select>
-            </label>
-            <label>Привод: 
-                <select name="drive" required>
-                    <option>Передний</option>
-                    <option>Задний</option>
-                    <option>Полный</option>
-                </select>
-            </label>
-            <label>Растаможен в Казахстане: 
-                <select name="customs" required>
-                    <option>Да</option>
-                    <option>Нет</option>
-                </select>
-            </label>
-            <label>Цена ($): <input name="price" type="number" required></label>
-            <label>Телефон продавца: <input name="phone" required></label>
-            <button class="btn btn-primary" type="submit">Добавить</button>
-        </form>
-        <form id="edit-car-form" class="edit-car-form" style="display:none;">
-            <h3>Редактировать автомобиль</h3>
-            <!-- поля будут динамически добавлены JS -->
-            <button class="btn btn-primary" type="submit">Сохранить</button>
-            <button class="btn btn-secondary" type="button" id="cancel-edit">Отмена</button>
-        </form>
-    </div>
-    <script src="../js/script.js"></script>
-    <script>    
-        let cars = [];
-        let editIndex = null;
 
-        function renderCars() {
-            const carList = document.getElementById('car-list');
-            if (cars.length === 0) {
-                carList.innerHTML = '<div style="color:#888;">Нет добавленных автомобилей.</div>';
-                return;
-            }
-            carList.innerHTML = '';
-            cars.forEach((car, idx) => {
-                carList.innerHTML += `
-                <div class="car-item">
-                    <img src="${car.img}" alt="${car.brand} ${car.model}">
-                    <div class="car-info">
-                        <div><b>${car.brand} ${car.model}</b> (${car.engine}, ${car.liter}л, ${car.type})</div>
-                        <div>Пробег: ${car.mileage} км, Страна: ${car.country}, Кузов: ${car.body}</div>
-                        <div>Мест: ${car.seats}, Руль: ${car.wheel}, Цвет: ${car.color}</div>
-                        <div>Коробка: ${car.gearbox}, Привод: ${car.drive}, Растаможен: ${car.customs}</div>
-                        <div>Цена: <b>$${car.price}</b> | Телефон: ${car.phone}</div>
+    <main class="main-content">
+        <section class="profile-hero">
+            <div class="container">
+                <img id="user-avatar" src="" alt="Аватар" class="profile-avatar">
+                <h1 id="user-name" class="profile-name">Загрузка...</h1>
+                <div class="profile-status">
+                    <span id="member-since">Член сообщества с 2024</span>
+                    <span class="verified-badge">✓ Подтвержден</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="dashboard">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🚗</div>
+                    <div id="total-orders" class="stat-number">0</div>
+                    <div class="stat-label">Всего заказов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏳</div>
+                    <div id="active-orders" class="stat-number">0</div>
+                    <div class="stat-label">Активных заказов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">❤️</div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Избранных авто</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Рейтинг</div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h3 style="margin-bottom: 20px; color: #2c3e50;">Быстрые действия</h3>
+                <div class="quick-actions-grid">
+                    <a href="#" class="quick-action">
+                        <span class="quick-action-icon">🔍</span>
+                        <span>Найти авто</span>
+                    </a>
+                    <a href="#" class="quick-action">
+                        <span class="quick-action-icon">📋</span>
+                        <span>Мои заказы</span>
+                    </a>
+                    <a href="#" class="quick-action">
+                        <span class="quick-action-icon">❤️</span>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="#" class="quick-action">
+                        <span class="quick-action-icon">💬</span>
+                        <span>Поддержка</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="profile-sections">
+                <div class="section-card">
+                    <div class="section-header">
+                        <span>Личная информация</span>
                     </div>
-                    <div class="car-actions">
-                        <button class="btn btn-secondary" onclick="editCar(${idx})">Редактировать</button>
-                        <button class="btn btn-secondary" onclick="deleteCar(${idx})">Удалить</button>
+                    <div class="section-content">
+                        <div class="info-row">
+                            <span class="info-label">Email</span>
+                            <span id="user-email" class="info-value">loading@example.com</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Телефон</span>
+                            <span id="user-phone" class="info-value">+7 (___) ___-__-__</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Логин</span>
+                            <span id="user-login" class="info-value">username</span>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-primary" onclick="editProfile()">Редактировать</button>
+                        </div>
                     </div>
                 </div>
-                `;
+
+                <div class="section-card">
+                    <div class="section-header">
+                        <span>Настройки аккаунта</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="info-row">
+                            <span class="info-label">Уведомления</span>
+                            <span class="info-value">✅ Включены</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Двухфакторная аутентификация</span>
+                            <span class="info-value">❌ Отключена</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Язык</span>
+                            <span class="info-value">Русский</span>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-secondary" onclick="showSettings()">Настройки</button>
+                            <button class="btn-action btn-danger" onclick="logout()">Выйти</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card recent-activity">
+                    <div class="section-header">
+                        <span>Последняя активность</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="activity-item">
+                            <div class="activity-icon activity-user">👤</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Регистрация завершена</div>
+                                <div class="activity-time">Только что</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon activity-heart">❤️</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Добавлены первые автомобили в избранное</div>
+                                <div class="activity-time">5 минут назад</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon activity-car">🚗</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Просмотр каталога автомобилей</div>
+                                <div class="activity-time">10 минут назад</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Проверяем авторизацию
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+
+        // Загружаем данные пользователя
+        const userData = JSON.parse(localStorage.getItem('user'));
+        if (userData) {
+            document.getElementById('user-name').textContent = userData.name;
+            document.getElementById('user-email').textContent = userData.email;
+            document.getElementById('user-phone').textContent = userData.phone;
+            document.getElementById('user-login').textContent = userData.login;
+            document.getElementById('user-avatar').src = userData.avatar;
+            document.getElementById('member-since').textContent = `Член сообщества с ${userData.memberSince}`;
+            document.getElementById('total-orders').textContent = '0';
+            document.getElementById('active-orders').textContent = '0';
+        }
+
+        function logout() {
+            if (confirm('Вы уверены, что хотите выйти?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('user');
+                window.location.href = '../../index.html';
+            }
+        }
+
+        function editProfile() {
+            alert('Функция редактирования профиля будет доступна в ближайшее время!');
+        }
+
+        function showSettings() {
+            alert('Настройки аккаунта будут доступны в ближайшее время!');
+        }
+
+        // Анимация загрузки статистики
+        function animateNumbers() {
+            const numbers = document.querySelectorAll('.stat-number');
+            numbers.forEach(num => {
+                const target = parseInt(num.textContent);
+                if (target > 0) {
+                    let current = 0;
+                    const increment = target / 20;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(timer);
+                        }
+                        num.textContent = Math.floor(current);
+                    }, 50);
+                }
             });
         }
 
-        document.getElementById('add-car-form').onsubmit = function(e) {
-            e.preventDefault();
-            const form = e.target;
-            const car = {};
-            Array.from(form.elements).forEach(el => {
-                if (el.name) car[el.name] = el.value;
+        // Запускаем анимацию после загрузки
+        setTimeout(animateNumbers, 500);
+        
+        // Мобильное меню
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
             });
-            cars.push(car);
-            form.reset();
-            renderCars();
-        };
 
-        window.deleteCar = function(idx) {
-            if (confirm('Удалить этот автомобиль?')) {
-                cars.splice(idx, 1);
-                renderCars();
-            }
-        };
-
-        window.editCar = function(idx) {
-            editIndex = idx;
-            const car = cars[idx];
-            const form = document.getElementById('edit-car-form');
-            form.innerHTML = `
-                <h3>Редактировать автомобиль</h3>
-                ${Object.keys(car).map(key => {
-                    if (key === 'img') return `<label>Фото (URL): <input name="img" type="url" value="${car.img}" required></label>`;
-                    if (key === 'brand') return `<label>Марка: <input name="brand" value="${car.brand}" required></label>`;
-                    if (key === 'model') return `<label>Модель: <input name="model" value="${car.model}" required></label>`;
-                    if (key === 'engine') return `<label>Двигатель: <input name="engine" value="${car.engine}" required></label>`;
-                    if (key === 'liter') return `<label>Объем (литр): <input name="liter" type="number" step="0.1" value="${car.liter}" required></label>`;
-                    if (key === 'type') return `<label>Тип двигателя: 
-                        <select name="type" required>
-                            <option${car.type==='Бензин'?' selected':''}>Бензин</option>
-                            <option${car.type==='Дизель'?' selected':''}>Дизель</option>
-                            <option${car.type==='Гибрид'?' selected':''}>Гибрид</option>
-                            <option${car.type==='Электро'?' selected':''}>Электро</option>
-                        </select>
-                    </label>`;
-                    if (key === 'mileage') return `<label>Пробег (км): <input name="mileage" type="number" value="${car.mileage}" required></label>`;
-                    if (key === 'country') return `<label>Страна производства: <input name="country" value="${car.country}" required></label>`;
-                    if (key === 'body') return `<label>Кузов: <input name="body" value="${car.body}" required></label>`;
-                    if (key === 'seats') return `<label>Кол-во мест: <input name="seats" type="number" value="${car.seats}" required></label>`;
-                    if (key === 'wheel') return `<label>Руль: 
-                        <select name="wheel" required>
-                            <option${car.wheel==='Левый'?' selected':''}>Левый</option>
-                            <option${car.wheel==='Правый'?' selected':''}>Правый</option>
-                        </select>
-                    </label>`;
-                    if (key === 'color') return `<label>Цвет: <input name="color" value="${car.color}" required></label>`;
-                    if (key === 'gearbox') return `<label>Коробка передач: 
-                        <select name="gearbox" required>
-                            <option${car.gearbox==='Автомат'?' selected':''}>Автомат</option>
-                            <option${car.gearbox==='Механика'?' selected':''}>Механика</option>
-                        </select>
-                    </label>`;
-                    if (key === 'drive') return `<label>Привод: 
-                        <select name="drive" required>
-                            <option${car.drive==='Передний'?' selected':''}>Передний</option>
-                            <option${car.drive==='Задний'?' selected':''}>Задний</option>
-                            <option${car.drive==='Полный'?' selected':''}>Полный</option>
-                        </select>
-                    </label>`;
-                    if (key === 'customs') return `<label>Растаможен в Казахстане: 
-                        <select name="customs" required>
-                            <option${car.customs==='Да'?' selected':''}>Да</option>
-                            <option${car.customs==='Нет'?' selected':''}>Нет</option>
-                        </select>
-                    </label>`;
-                    if (key === 'price') return `<label>Цена ($): <input name="price" type="number" value="${car.price}" required></label>`;
-                    if (key === 'phone') return `<label>Телефон продавца: <input name="phone" value="${car.phone}" required></label>`;
-                    return '';
-                }).join('')}
-                <button class="btn btn-primary" type="submit">Сохранить</button>
-                <button class="btn btn-secondary" type="button" id="cancel-edit">Отмена</button>
-            `;
-            form.style.display = '';
-            document.getElementById('add-car-form').style.display = 'none';
-            document.getElementById('cancel-edit').onclick = function() {
-                form.style.display = 'none';
-                document.getElementById('add-car-form').style.display = '';
-            };
-            form.onsubmit = function(e) {
-                e.preventDefault();
-                const newCar = {};
-                Array.from(form.elements).forEach(el => {
-                    if (el.name) newCar[el.name] = el.value;
+            // Закрытие меню при клике на ссылку
+            document.querySelectorAll('.nav__link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
                 });
-                cars[editIndex] = newCar;
-                form.style.display = 'none';
-                document.getElementById('add-car-form').style.display = '';
-                renderCars();
-            };
-        };
+            });
 
-        renderCars();
+            // Закрытие меню при клике вне его
+            document.addEventListener('click', (e) => {
+                if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                }
+            });
+        }
     </script>
 </body>
 </html>

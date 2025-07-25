@@ -10,443 +10,403 @@
     <header class="header">
         <div class="container header__container">
             <div class="logo">KazGruz</div>
-            <nav class="nav">
-    <a href="index.html" class="nav__link active">Главная</a>
-    <a href="#catalog" class="nav__link">Каталог</a>
-    <a href="frontend/html/login.html" class="nav__link nav__login-btn">Вход / Регистрация</a>
-</nav>
+            <div class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav class="nav" id="nav-menu">
+                <a href="#welcome" class="nav__link active">Главная</a>
+                <a href="frontend/html/catalog.html" class="nav__link">Каталог</a>
+                <a href="#news" class="nav__link">Новости</a>
+                <a href="#about" class="nav__link">О нас</a>
+                <a href="frontend/html/login.html" class="nav__link nav__login-btn" id="auth-btn">Вход / Регистрация</a>
+                <a href="frontend/html/profile.html" class="nav__link nav__profile-btn" id="profile-btn" style="display: none;">Личный кабинет</a>
+            </nav>
         </div>
     </header>
-    <section class="banner">
-        <div class="container">
-            <h1>Покупайте авто из Грузии <span class="accent">дешевле</span> с KazGruz</h1>
-            <p>Лучший сервис для покупки автомобилей из Грузии для Казахстана. Прозрачные цены, быстрая доставка, поддержка на всех этапах.</p>
-            <a href="#catalog" class="btn btn-primary">Перейти к каталогу</a>
+
+    <!-- Полноэкранный приветственный экран -->
+    <section class="welcome-screen" id="welcome">
+        <div class="welcome-content">
+            <div class="welcome-logo">KazGruz</div>
+            <h1 class="welcome-title">Покупайте авто из Грузии <span class="accent">безопасно</span></h1>
+            <p class="welcome-subtitle">Лучшая платформа для покупки автомобилей из Грузии в Казахстан</p>
+            <div class="welcome-features">
+                <div class="feature">✓ Проверенные автомобили</div>
+                <div class="feature">✓ Прозрачные цены</div>
+                <div class="feature">✓ Быстрая доставка</div>
+            </div>
+            <a href="frontend/html/catalog.html" class="btn btn-primary btn-large">Смотреть каталог</a>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow">↓</div>
         </div>
     </section>
-    <section class="catalog" id="catalog">
+
+    <!-- Раздел новостей -->
+    <section class="news-section" id="news">
         <div class="container">
-            <h2>Популярные автомобили</h2>
-            <div class="cars-grid">
-                <!-- 1 -->
-                <div class="car-card" data-car='{"title":"Toyota Camry 2018","desc":"2.5 л, Бензин, Автомат, Пробег: 65 000 км, Левый руль, Серый цвет","price":13500,"img":"https://www.ap.ge/system/car/photos/008/367/052/medium.jpg?1739535811","phone":"+7 701 111 11 11"}'>
-                    <img src="https://www.ap.ge/system/car/photos/008/367/052/medium.jpg?1739535811" alt="Toyota Camry">
-                    <div class="car-info">
-                        <h3>Toyota Camry 2018</h3>
-                        <p>2.5 л, Бензин, Автомат</p>
-                        <div class="car-price">$13,500</div>
-                        <button class="btn btn-secondary car-details-btn">Подробнее</button>
+            <h2 class="section-title">Последние обновления</h2>
+            <div class="news-grid">
+                <article class="news-card" onclick="openNewsDetail(8)">
+                    <div class="news-id">#008</div>
+                    <img src="https://via.placeholder.com/300x200/f8f9fa/6c757d?text=Обновление+8" alt="Новость 8" class="news-image">
+                    <div class="news-content">
+                        <h3 class="news-title">Программа лояльности</h3>
+                        <p class="news-excerpt">Запускаем программу лояльности для постоянных клиентов...</p>
+                        <div class="news-meta">
+                            <span class="news-date">25 июля 2025</span>
+                            <div class="news-reactions">
+                                <span class="like">👍 22</span>
+                                <span class="dislike">👎 1</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" onclick="openNewsDetail(7)">
+                    <div class="news-id">#007</div>
+                    <img src="https://via.placeholder.com/300x200/f8f9fa/6c757d?text=Обновление+7" alt="Новость 7" class="news-image">
+                    <div class="news-content">
+                        <h3 class="news-title">Улучшенная система поиска</h3>
+                        <p class="news-excerpt">Обновили алгоритм поиска автомобилей для лучших результатов...</p>
+                        <div class="news-meta">
+                            <span class="news-date">23 июля 2025</span>
+                            <div class="news-reactions">
+                                <span class="like">👍 15</span>
+                                <span class="dislike">👎 2</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" onclick="openNewsDetail(6)">
+                    <div class="news-id">#006</div>
+                    <img src="https://via.placeholder.com/300x200/f8f9fa/6c757d?text=Обновление+6" alt="Новость 6" class="news-image">
+                    <div class="news-content">
+                        <h3 class="news-title">Новая система оплаты</h3>
+                        <p class="news-excerpt">Добавили возможность оплаты через Kaspi и Halyk банки...</p>
+                        <div class="news-meta">
+                            <span class="news-date">20 июля 2025</span>
+                            <div class="news-reactions">
+                                <span class="like">👍 19</span>
+                                <span class="dislike">👎 0</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" onclick="openNewsDetail(5)">
+                    <div class="news-id">#005</div>
+                    <img src="https://via.placeholder.com/300x200/f8f9fa/6c757d?text=Обновление+5" alt="Новость 5" class="news-image">
+                    <div class="news-content">
+                        <h3 class="news-title">Открытие офиса в Алматы</h3>
+                        <p class="news-excerpt">Для удобства клиентов открываем представительство в Алматы...</p>
+                        <div class="news-meta">
+                            <span class="news-date">18 июля 2025</span>
+                            <div class="news-reactions">
+                                <span class="like">👍 28</span>
+                                <span class="dislike">👎 1</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" onclick="openNewsDetail(4)">
+                    <div class="news-id">#004</div>
+                    <img src="https://via.placeholder.com/300x200/f8f9fa/6c757d?text=Обновление+4" alt="Новость 4" class="news-image">
+                    <div class="news-content">
+                        <h3 class="news-title">Мобильное приложение в разработке</h3>
+                        <p class="news-excerpt">Скоро запустим мобильное приложение для еще большего удобства...</p>
+                        <div class="news-meta">
+                            <span class="news-date">15 июля 2025</span>
+                            <div class="news-reactions">
+                                <span class="like">👍 32</span>
+                                <span class="dislike">👎 3</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" onclick="openNewsDetail(3)">
+                    <div class="news-id">#003</div>
+                    <img src="https://via.placeholder.com/300x200/f8f9fa/6c757d?text=Обновление+3" alt="Новость 3" class="news-image">
+                    <div class="news-content">
+                        <h3 class="news-title">Снижение комиссии на 15%</h3>
+                        <p class="news-excerpt">Приятная новость для всех клиентов - снижаем комиссию за наши услуги...</p>
+                        <div class="news-meta">
+                            <span class="news-date">12 июля 2025</span>
+                            <div class="news-reactions">
+                                <span class="like">👍 45</span>
+                                <span class="dislike">👎 0</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" onclick="openNewsDetail(2)">
+                    <div class="news-id">#002</div>
+                    <img src="https://via.placeholder.com/300x200/f8f9fa/6c757d?text=Обновление+2" alt="Новость 2" class="news-image">
+                    <div class="news-content">
+                        <h3 class="news-title">Новые партнеры в Грузии</h3>
+                        <p class="news-excerpt">Расширяем сеть партнеров для лучшего обслуживания наших клиентов...</p>
+                        <div class="news-meta">
+                            <span class="news-date">10 июля 2025</span>
+                            <div class="news-reactions">
+                                <span class="like">👍 18</span>
+                                <span class="dislike">👎 1</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" onclick="openNewsDetail(1)">
+                    <div class="news-id">#001</div>
+                    <img src="https://via.placeholder.com/300x200/f8f9fa/6c757d?text=Обновление+1" alt="Новость 1" class="news-image">
+                    <div class="news-content">
+                        <h3 class="news-title">Запуск новой версии платформы</h3>
+                        <p class="news-excerpt">Мы рады представить обновленную версию нашей платформы с улучшенным интерфейсом...</p>
+                        <div class="news-meta">
+                            <span class="news-date">8 июля 2025</span>
+                            <div class="news-reactions">
+                                <span class="like">👍 24</span>
+                                <span class="dislike">👎 2</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Раздел О нас -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <h2 class="section-title">О нас</h2>
+            <div class="about-content">
+                <div class="about-main">
+                    <h3>KazGruz - надежная платформа для покупки автомобилей из Грузии</h3>
+                    <p>Мы создали безопасную и удобную платформу, где каждый может найти и купить качественный автомобиль из Грузии. Наша миссия - обеспечить прозрачность, безопасность и удобство при покупке автомобилей за границей.</p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Довольных клиентов</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">1000+</div>
+                            <div class="stat-label">Автомобилей продано</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">2025</div>
+                            <div class="stat-label">Год запуска</div>
+                        </div>
                     </div>
                 </div>
-                <!-- 2 -->
-                <div class="car-card" data-car='{"title":"Hyundai Sonata 2017","desc":"2.0 л, Бензин, Автомат, Пробег: 80 000 км, Левый руль, Белый цвет","price":11800,"img":"https://ap.ge/system/car/photos/008/502/459/medium.jpg?1745336025","phone":"+7 701 222 22 22"}'>
-                    <img src="https://ap.ge/system/car/photos/008/502/459/medium.jpg?1745336025" alt="Hyundai Sonata">
-                    <div class="car-info">
-                        <h3>Hyundai Sonata 2017</h3>
-                        <p>2.0 л, Бензин, Автомат</p>
-                        <div class="car-price">$11,800</div>
-                        <button class="btn btn-secondary car-details-btn">Подробнее</button>
-                    </div>
-                </div>
-                <!-- 3 -->
-                <div class="car-card" data-car='{"title":"Kia Optima 2019","desc":"2.4 л, Бензин, Автомат, Пробег: 55 000 км, Левый руль, Черный цвет","price":14200,"img":"https://ap.ge/system/car/photos/008/541/329/medium.jpg?1746887691","phone":"+7 701 333 33 33"}'>
-                    <img src="https://ap.ge/system/car/photos/008/541/329/medium.jpg?1746887691" alt="Kia Optima">
-                    <div class="car-info">
-                        <h3>Kia Optima 2019</h3>
-                        <p>2.4 л, Бензин, Автомат</p>
-                        <div class="car-price">$14,200</div>
-                        <button class="btn btn-secondary car-details-btn">Подробнее</button>
-                    </div>
-                </div>
-                <!-- 4 -->
-                <div class="car-card" data-car='{"title":"BMW 320i 2016","desc":"2.0 л, Бензин, Автомат, Пробег: 90 000 км, Левый руль, Синий цвет","price":16500,"img":"https://ap.ge/system/car/photos/008/541/330/medium.jpg?1746887692","phone":"+7 701 444 44 44"}'>
-                    <img src=https://autopapa.ge/system/car/photos/008/407/539/medium.jpg?1741435673"" alt="BMW 320i">
-                    <div class="car-info">
-                        <h3>BMW 320i 2016</h3>
-                        <p>2.0 л, Бензин, Автомат</p>
-                        <div class="car-price">$16,500</div>
-                        <button class="btn btn-secondary car-details-btn">Подробнее</button>
-                    </div>
-                </div>
-                <!-- 5 -->
-                <div class="car-card" data-car='{"title":"Mercedes-Benz E200 2015","desc":"2.0 л, Бензин, Автомат, Пробег: 110 000 км, Левый руль, Серебристый цвет","price":17500,"img":"https://ap.ge/system/car/photos/008/541/331/medium.jpg?1746887693","phone":"+7 701 555 55 55"}'>
-                    <img src="https://autopapa.ge/system/car/photos/008/302/992/original.jpg?1736951935" alt="Mercedes-Benz E200">
-                    <div class="car-info">
-                        <h3>Mercedes-Benz E200 2015</h3>
-                        <p>2.0 л, Бензин, Автомат</p>
-                        <div class="car-price">$17,500</div>
-                        <button class="btn btn-secondary car-details-btn">Подробнее</button>
-                    </div>
-                </div>
-                <!-- 6 -->
-                <div class="car-card" data-car='{"title":"Lexus RX 350 2017","desc":"3.5 л, Бензин, Автомат, Пробег: 70 000 км, Левый руль, Белый цвет","price":26500,"img":"https://ap.ge/system/car/photos/008/541/332/medium.jpg?1746887694","phone":"+7 701 666 66 66"}'>
-                    <img src="https://autopapa.ge/system/car/photos/008/555/784/original.jpg?1747484804" alt="Lexus RX 350">
-                    <div class="car-info">
-                        <h3>Lexus RX 350 2017</h3>
-                        <p>3.5 л, Бензин, Автомат</p>
-                        <div class="car-price">$26,500</div>
-                        <button class="btn btn-secondary car-details-btn">Подробнее</button>
-                    </div>
-                </div>
-                <!-- 7 -->
-                <div class="car-card" data-car='{"title":"Honda Accord 2018","desc":"2.4 л, Бензин, Автомат, Пробег: 60 000 км, Левый руль, Красный цвет","price":14800,"img":"https://ap.ge/system/car/photos/008/541/333/medium.jpg?1746887695","phone":"+7 701 777 77 77"}'>
-                    <img src="https://www.ap.ge/system/car/photos/007/832/764/medium.jpg?1715548683" alt="Honda Accord">
-                    <div class="car-info">
-                        <h3>Honda Accord 2018</h3>
-                        <p>2.4 л, Бензин, Автомат</p>
-                        <div class="car-price">$14,800</div>
-                        <button class="btn btn-secondary car-details-btn">Подробнее</button>
-                    </div>
-                </div>
-                <!-- 8 -->
-                <div class="car-card" data-car='{"title":"Mazda 6 2017","desc":"2.0 л, Бензин, Автомат, Пробег: 75 000 км, Левый руль, Серый цвет","price":12900,"img":"https://ap.ge/system/car/photos/008/541/334/medium.jpg?1746887696","phone":"+7 701 888 88 88"}'>
-                    <img src="https://ap.ge/system/car/photos/008/636/565/medium.jpg?1750694476" alt="Mazda 6">
-                    <div class="car-info">
-                        <h3>Mazda 6 2017</h3>
-                        <p>2.0 л, Бензин, Автомат</p>
-                        <div class="car-price">$12,900</div>
-                        <button class="btn btn-secondary car-details-btn">Подробнее</button>
-                    </div>
-                </div>
-                <!-- 9 -->
-                <div class="car-card" data-car='{"title":"Volkswagen Passat 2016","desc":"1.8 л, Бензин, Автомат, Пробег: 85 000 км, Левый руль, Черный цвет","price":11900,"img":"https://ap.ge/system/car/photos/008/541/335/medium.jpg?1746887697","phone":"+7 701 999 99 99"}'>
-                    <img src="https://ap.ge/system/car/photos/008/610/186/medium.jpg?1749647877" alt="Volkswagen Passat">
-                    <div class="car-info">
-                        <h3>Volkswagen Passat 2016</h3>
-                        <p>1.8 л, Бензин, Автомат</p>
-                        <div class="car-price">$11,900</div>
-                        <button class="btn btn-secondary car-details-btn">Подробнее</button>
-                    </div>
-                </div>
-                <!-- 10 -->
-                <div class="car-card" data-car='{"title":"Nissan X-Trail 2018","desc":"2.5 л, Бензин, Автомат, Пробег: 68 000 км, Левый руль, Зеленый цвет","price":15300,"img":"https://ap.ge/system/car/photos/008/541/336/medium.jpg?1746887698","phone":"+7 701 123 45 67"}'>
-                    <img src="https://apiweb.rolf.ru/storage/thumbnails/large/vehicles/used/1543421/5c09233032f31a0e85176d97a539754d.jpg" alt="Nissan X-Trail">
-                    <div class="car-info">
-                        <h3>Nissan X-Trail 2018</h3>
-                        <p>2.5 л, Бензин, Автомат</p>
-                        <div class="car-price">$15,300</div>
-                        <button class="btn btn-secondary car-details-btn">Подробнее</button>
-                    </div>
-                </div>
-                <!-- 11 -->
-                <div class="car-card" data-car='{"title":"Chevrolet Malibu 2018","desc":"1.5 л, Бензин, Автомат, Пробег: 72 000 км, Левый руль, Белый цвет","price":12500,"img":"https://ap.ge/system/car/photos/008/541/337/medium.jpg?1746887699","phone":"+7 701 234 56 78"}'>
-                    <img src="https://ap.ge/system/car/photos/008/362/684/medium.jpg?1739372052" alt="Chevrolet Malibu">
-                    <div class="car-info">
-                        <h3>Chevrolet Malibu 2018</h3>
-                        <p>1.5 л, Бензин, Автомат</p>
-                        <div class="car-price">$12,500</div>
-                        <button class="btn btn-secondary car-details-btn">Подробнее</button>
-                    </div>
-                </div>
-                <!-- 12 -->
-                <div class="car-card" data-car='{"title":"Ford Fusion 2017","desc":"2.0 л, Бензин, Автомат, Пробег: 78 000 км, Левый руль, Синий цвет","price":11900,"img":"https://ap.ge/system/car/photos/008/541/338/medium.jpg?1746887700","phone":"+7 701 345 67 89"}'>
-                    <img src="https://ap.ge/system/car/photos/008/619/002/medium.jpg?1749988771" alt="Ford Fusion">
-                    <div class="car-info">
-                        <h3>Ford Fusion 2017</h3>
-                        <p>2.0 л, Бензин, Автомат</p>
-                        <div class="car-price">$11,900</div>
-                        <button class="btn btn-secondary car-details-btn">Подробнее</button>
+                <div class="about-team">
+                    <h4>Создатели проекта:</h4>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="member-placeholder"></div>
+                            <div class="member-name">Имя создателя 1</div>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-placeholder"></div>
+                            <div class="member-name">Имя создателя 2</div>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-placeholder"></div>
+                            <div class="member-name">Имя создателя 3</div>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-placeholder"></div>
+                            <div class="member-name">Имя создателя 4</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Модальное окно для подробностей и калькулятора -->
-    <div id="car-modal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="modal-close" id="modal-close">&times;</span>
-            <img id="modal-img" src="" alt="" style="width:100%;max-width:340px;border-radius:10px;margin-bottom:18px;">
-            <h2 id="modal-title"></h2>
-            <p id="modal-desc"></p>
-            <div style="font-size:1.1rem;margin:12px 0;">
-                Цена: <span id="modal-price" style="color:#1a73e8;font-weight:bold;"></span>
-            </div>
-            <div id="modal-phone" style="margin:10px 0 18px 0;font-size:1.08rem;color:#222;font-weight:500;"></div>
-            <div class="currency-calc">
-                <label for="usd-input">Конвертер: $</label>
-                <input id="usd-input" type="number" min="1" value="1" style="width:80px;padding:4px 8px;">
-                <span>= <span id="kzt-output">520</span> ₸</span>
-            </div>
-            <div style="margin-top:18px;display:flex;gap:10px;justify-content:center;">
-                <button id="chat-btn" class="btn btn-secondary" type="button">Чат с продавцом</button>
-                <button id="buy-btn" class="btn btn-primary" type="button">Купить</button>
-            </div>
-        </div>
-    </div>
-    <!-- Модальное окно чата -->
-    <div id="chat-modal" class="modal" style="display:none;">
-        <div class="modal-content" style="max-width:380px;">
-            <span class="modal-close" id="chat-close">&times;</span>
-            <h3 style="margin-bottom:10px;">Чат с продавцом</h3>
-            <div id="chat-window" style="background:#f7f7f9;height:180px;overflow-y:auto;border-radius:8px;padding:10px 8px 10px 8px;margin-bottom:10px;font-size:1rem;">
-                <div style="color:#888;">Вы начали чат с продавцом.</div>
-            </div>
-            <form id="chat-form" style="display:flex;gap:6px;">
-                <input id="chat-input" type="text" placeholder="Ваше сообщение..." style="flex:1;padding:7px 10px;border-radius:6px;border:1px solid #e3e3e3;">
-                <button class="btn btn-primary" type="submit" style="padding:7px 16px;">Отправить</button>
-            </form>
-        </div>
-    </div>
-    <!-- Модальное окно покупки -->
-    <div id="buy-modal" class="modal" style="display:none;">
-        <div class="modal-content" style="max-width:340px;">
-            <span class="modal-close" id="buy-close">&times;</span>
-            <h3>Покупка автомобиля</h3>
-            <div id="buy-info" style="margin:18px 0 12px 0;"></div>
-            <button class="btn btn-primary" id="buy-confirm-btn" style="width:100%;">Подтвердить покупку</button>
-        </div>
-    </div>
+
     <footer class="footer">
         <div class="container footer__container">
-            <div>KazGruz © 2025</div>
-            <div>Контакты: <a href="mailto:info@kazgruz.kz">info@kazgruz.kz</a></div>
+            <div class="footer-section">
+                <h4>Способы оплаты</h4>
+                <div class="payment-methods">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/200px-PayPal.svg.png" alt="PayPal" class="payment-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/ru/thumb/a/aa/Logo_of_Kaspi_bank.png/960px-Logo_of_Kaspi_bank.png?20170626135209" alt="Kaspi Bank" class="payment-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/ru/thumb/a/ac/NBK_Logo.svg/250px-NBK_Logo.svg.png" alt="Halyk Bank" class="payment-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Visa_Logo.png/200px-Visa_Logo.png" alt="Visa" class="payment-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/200px-Mastercard-logo.svg.png" alt="Mastercard" class="payment-logo">
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Скачать приложение</h4>
+                <div class="app-downloads">
+                    <a href="#" class="app-link">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/200px-Google_Play_Store_badge_EN.svg.png" alt="Google Play" class="app-store-logo">
+                    </a>
+                    <a href="#" class="app-link">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/200px-Download_on_the_App_Store_Badge.svg.png" alt="App Store" class="app-store-logo">
+                    </a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <div class="contact-info">
+                    <p>📧 info@kazgruz.kz</p>
+                    <p>📞 +7 (775) 277-91-69</p>
+                    <p>🏢 г. Астана, Улица Сыганак, 47</p>
+                    <p>⏰ Пн-Пт: 9:00-18:00</p>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Поддержка</h4>
+                <div class="support-info">
+                    <p>📞 Техподдержка: +7 (705) 687-48-22</p>
+                    <p>💬 Telegram: @kazgruz_support</p>
+                    <p>📱 WhatsApp: +7 (705) 687-48-22</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>KazGruz © 2025. Все права защищены.</p>
+            </div>
         </div>
     </footer>
+
     <script src="frontend/js/script.js"></script>
     <script>
-        // Модальное окно
-        const modal = document.getElementById('car-modal');
-        const modalClose = document.getElementById('modal-close');
-        const modalImg = document.getElementById('modal-img');
-        const modalTitle = document.getElementById('modal-title');
-        const modalDesc = document.getElementById('modal-desc');
-        const modalPrice = document.getElementById('modal-price');
-        const modalPhone = document.getElementById('modal-phone');
-        const usdInput = document.getElementById('usd-input');
-        const kztOutput = document.getElementById('kzt-output');
-        const USD_KZT = 520;
+        // Функция для открытия детальной страницы новости
+        function openNewsDetail(newsId) {
+            const newsData = {
+                1: {
+                    title: 'Запуск новой версии платформы',
+                    date: '15 июля 2025',
+                    image: 'https://via.placeholder.com/600x300/1a73e8/ffffff?text=Новость+1',
+                    content: `
+                        <p>Мы рады представить вам обновленную версию нашей платформы KazGruz! После месяцев упорной работы наша команда разработчиков создала более удобный и функциональный интерфейс.</p>
+                        
+                        <h4>Что нового:</h4>
+                        <ul>
+                            <li>Улучшенный дизайн и навигация</li>
+                            <li>Быстрый поиск автомобилей</li>
+                            <li>Мобильная оптимизация</li>
+                            <li>Новый калькулятор стоимости</li>
+                            <li>Интегрированный чат с продавцами</li>
+                        </ul>
+                        
+                        <p>Мы уверены, что эти изменения сделают процесс покупки автомобиля еще более простым и удобным для наших клиентов.</p>
+                    `,
+                    likes: 24,
+                    dislikes: 2
+                },
+                2: {
+                    title: 'Новые партнеры в Грузии',
+                    date: '12 июля 2025',
+                    image: 'https://via.placeholder.com/600x300/1a73e8/ffffff?text=Новость+2',
+                    content: `
+                        <p>Мы продолжаем расширять нашу партнерскую сеть в Грузии для предоставления лучших услуг нашим клиентам.</p>
+                        
+                        <h4>Новые партнеры:</h4>
+                        <ul>
+                            <li>AutoHouse Tbilisi - крупнейший автосалон в Тбилиси</li>
+                            <li>Georgian Motors - специалисты по японским автомобилям</li>
+                            <li>Caucasus Auto - проверенный дилер европейских марок</li>
+                        </ul>
+                        
+                        <p>Благодаря новым партнерствам мы можем предложить еще больший выбор качественных автомобилей по выгодным ценам.</p>
+                    `,
+                    likes: 18,
+                    dislikes: 1
+                }
+                // Добавить данные для остальных новостей...
+            };
+            
+            localStorage.setItem('currentNews', JSON.stringify(newsData[newsId]));
+            window.location.href = 'news-detail.html';
+        }
 
-        const chatModal = document.getElementById('chat-modal');
-        const chatClose = document.getElementById('chat-close');
-        const chatBtn = document.getElementById('chat-btn');
-        const chatWindow = document.getElementById('chat-window');
-        const chatForm = document.getElementById('chat-form');
-        const chatInput = document.getElementById('chat-input');
-        let currentSeller = '';
-
-        const buyModal = document.getElementById('buy-modal');
-        const buyClose = document.getElementById('buy-close');
-        const buyBtn = document.getElementById('buy-btn');
-        const buyInfo = document.getElementById('buy-info');
-        const buyConfirmBtn = document.getElementById('buy-confirm-btn');
-        let currentCarTitle = '';
-
-        document.querySelectorAll('.car-details-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const card = btn.closest('.car-card');
-                const car = JSON.parse(card.getAttribute('data-car'));
-                modalImg.src = car.img;
-                modalTitle.textContent = car.title;
-                modalDesc.textContent = car.desc;
-                modalPrice.textContent = `$${car.price} (~${car.price * USD_KZT} ₸)`;
-                modalPhone.textContent = 'Телефон продавца: ' + (car.phone || '-');
-                usdInput.value = car.price;
-                kztOutput.textContent = car.price * USD_KZT;
-                modal.style.display = 'flex';
-                // Сохраняем текущего продавца и авто для чата/покупки
-                currentSeller = car.phone || '';
-                currentCarTitle = car.title;
+        // Плавная прокрутка к якорям
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
             });
         });
-        modalClose.onclick = () => { modal.style.display = 'none'; };
-        window.onclick = e => {
-            if(e.target === modal) modal.style.display = 'none';
-            if(e.target === chatModal) chatModal.style.display = 'none';
-            if(e.target === buyModal) buyModal.style.display = 'none';
-        };
-        usdInput.oninput = function() {
-            let usd = parseFloat(usdInput.value) || 0;
-            kztOutput.textContent = usd * USD_KZT;
+
+        // Анимация появления элементов при прокрутке
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         };
 
-        // Чат с продавцом
-        chatBtn.onclick = function() {
-            chatModal.style.display = 'flex';
-            chatWindow.innerHTML = `<div style="color:#888;">Вы начали чат с продавцом (${currentSeller})</div>`;
-        };
-        chatClose.onclick = () => { chatModal.style.display = 'none'; };
-        chatForm.onsubmit = function(e) {
-            e.preventDefault();
-            const msg = chatInput.value.trim();
-            if(msg) {
-                chatWindow.innerHTML += `<div style="text-align:right;margin:6px 0;"><span style="background:#e3f0ff;padding:5px 10px;border-radius:8px;display:inline-block;">${msg}</span></div>`;
-                setTimeout(() => {
-                    chatWindow.innerHTML += `<div style="text-align:left;margin:6px 0;"><span style="background:#f1f1f1;padding:5px 10px;border-radius:8px;display:inline-block;">Продавец: Спасибо за ваш интерес! Я на связи.</span></div>`;
-                    chatWindow.scrollTop = chatWindow.scrollHeight;
-                }, 700);
-                chatWindow.scrollTop = chatWindow.scrollHeight;
-                chatInput.value = '';
-            }
-        };
-
-        // Покупка авто
-        buyBtn.onclick = function() {
-            buyModal.style.display = 'flex';
-            buyInfo.textContent = `Вы уверены, что хотите купить "${currentCarTitle}"? Продавец: ${currentSeller}`;
-            buyConfirmBtn.style.display = '';
-        };
-        buyClose.onclick = () => { buyModal.style.display = 'none'; };
-        buyConfirmBtn.onclick = function() {
-            buyInfo.textContent = 'Поздравляем! Ваша заявка на покупку отправлена продавцу. Ожидайте звонка.';
-            buyConfirmBtn.style.display = 'none';
-
-            // Отправка данных о покупке в Telegram-бота
-            const telegramBotToken = '7567626407:AAFBCVcaHrAlCveVhnOlPHbbm7Ah4ylCAw8'; // <-- Ваш токен
-            const telegramChatId = 7567626407; // <-- Ваш chat_id (число, без кавычек)
-            const message = 
-                `Новая заявка на покупку авто:\n` +
-                `Модель: ${currentCarTitle}\n` +
-                `Телефон продавца: ${currentSeller}\n` +
-                `Дата: ${new Date().toLocaleString()}`;
-
-            fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: telegramChatId,
-                    text: message
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.ok) {
-                    alert('Ошибка отправки в Telegram: ' + (data.description || 'Проверьте chat_id и токен'));
-                    console.error('Telegram API error:', data);
-                } else {
-                    console.log('Успешно отправлено в Telegram:', data);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
                 }
-            })
-            .catch(err => {
-                alert('Ошибка соединения с Telegram API');
-                console.error('Fetch error:', err);
             });
-        };
-    </script>
-    <style>
-    /* Модальное окно и калькулятор */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0; top: 0; width: 100vw; height: 100vh;
-        background: rgba(0,0,0,0.35);
-        align-items: center;
-        justify-content: center;
-    }
-    .modal-content {
-        background: #fff;
-        border-radius: 14px;
-        padding: 32px 28px 24px 28px;
-        max-width: 400px;
-        width: 90vw;
-        box-shadow: 0 8px 32px rgba(26,115,232,0.10);
-        position: relative;
-        text-align: center;
-        animation: modalShow 0.2s;
-    }
-    @keyframes modalShow {
-        from { transform: translateY(40px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-    }
-    .modal-close {
-        position: absolute;
-        right: 18px; top: 12px;
-        font-size: 2rem;
-        color: #888;
-        cursor: pointer;
-        transition: color 0.2s;
-    }
-    .modal-close:hover { color: #1a73e8; }
-    .currency-calc {
-        margin-top: 18px;
-        font-size: 1.05rem;
-        background: #f7f7f9;
-        border-radius: 8px;
-        padding: 10px 0 10px 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-    }
-    /* Дополнительно для чата и покупки */
-    #chat-window {
-        min-height: 80px;
-        max-height: 180px;
-    }
+        }, observerOptions);
 
-    /* --- Мобильная адаптация --- */
-    @media (max-width: 700px) {
-        .header__container, .footer__container {
-            flex-direction: column;
-            gap: 12px;
-            height: auto;
+        document.querySelectorAll('.news-card, .about-section').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Проверяем статус авторизации
+        function checkAuthStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const authBtn = document.getElementById('auth-btn');
+            const profileBtn = document.getElementById('profile-btn');
+            
+            if (isLoggedIn) {
+                authBtn.style.display = 'none';
+                profileBtn.style.display = 'block';
+                
+                const userData = JSON.parse(localStorage.getItem('user'));
+                if (userData) {
+                    profileBtn.textContent = `👤 ${userData.name}`;
+                }
+            } else {
+                authBtn.style.display = 'block';
+                profileBtn.style.display = 'none';
+            }
         }
-        .logo {
-            font-size: 1.5rem;
-        }
-        .nav {
-            gap: 10px;
-        }
-        .banner h1 {
-            font-size: 1.3rem;
-        }
-        .banner p {
-            font-size: 1rem;
-        }
-        .btn, .btn-primary, .btn-secondary {
-            font-size: 0.98rem;
-            padding: 9px 16px;
-        }
-        .catalog {
-            padding: 18px 0;
-        }
-        .catalog h2 {
-            font-size: 1.2rem;
-            margin-bottom: 18px;
-        }
-        .cars-grid {
-            grid-template-columns: 1fr;
-            gap: 18px;
-        }
-        .car-card {
-            border-radius: 10px;
-        }
-        .car-card img {
-            height: 140px;
-        }
-        .car-info h3 {
-            font-size: 1rem;
-        }
-        .car-info p, .car-price {
-            font-size: 0.95rem;
-        }
-        .modal-content {
-            padding: 18px 8px 16px 8px;
-            max-width: 98vw;
-        }
-        #chat-window {
-            font-size: 0.97rem;
-            padding: 7px 4px 7px 4px;
-        }
-        .currency-calc {
-            font-size: 0.97rem;
-            padding: 7px 0 7px 0;
-        }
-    }
-    @media (max-width: 430px) {
-        .container {
-            padding: 0 4px;
-        }
-        .modal-content {
-            padding: 10px 2vw 10px 2vw;
-        }
-        .car-card img {
-            height: 100px;
-        }
-        .footer__container {
-            font-size: 0.95rem;
-        }
-    }
-    </style>
+
+        // Проверяем при загрузке страницы
+        checkAuthStatus();
+
+        // Мобильное меню
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Закрытие меню при клике на ссылку
+        document.querySelectorAll('.nav__link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Закрытие меню при клике вне его
+        document.addEventListener('click', (e) => {
+            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
